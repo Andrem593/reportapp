@@ -31,6 +31,14 @@ const router = new Router({
                     component: () => import("./views/Home.vue"),
                 },
                 {
+                    path: "/dashboard",
+                    name: "home",
+                    meta: {
+                        requiresAuth: true,
+                    },
+                    component: () => import("./views/Home.vue"),
+                },
+                {
                     path: "/page2",
                     name: "page-2",
                     meta: {
@@ -68,27 +76,6 @@ const router = new Router({
                 },
             ],
         },
-        {
-            // =============================================================================
-            // MAIN LAYOUT ROUTES
-            // =============================================================================
-            path: "",
-            component: () => import("@/layouts/full-page/FullPage.vue"),
-            children: [
-                // =============================================================================
-                // Theme Routes
-                // =============================================================================
-                {
-                    path: "/dashboard",
-                    name: "home",
-                    meta: {
-                        requiresAuth: true,
-                    },
-                    component: () => import("./views/Home.vue"),
-                },
-            ],
-        },
-
         // =============================================================================
         // FULL PAGE LAYOUTS
         // =============================================================================
