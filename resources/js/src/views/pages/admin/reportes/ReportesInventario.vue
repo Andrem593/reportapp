@@ -9,7 +9,20 @@
 
 <template>
     <div id="ag-grid-demo" class="mb-4">
+
         <vx-card>
+            <div slot="no-body" class="full-page-bg-color">
+                    <div class="vx-row no-gutter">
+                        <div class="vx-col sm:w-full md:w-full lg:w-1/2 self-center d-theme-dark-bg" >
+                            <div class="px-8 pt-8 register-tabs-container">
+                                <div class="vx-card__title mb-4">
+                                    <h4 class="mb-4">Reporte - Inventarios</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             <!-- TABLE ACTION ROW -->
             <div class="flex flex-wrap justify-between items-center">
                 <!-- ITEMS PER PAGE -->
@@ -31,7 +44,7 @@
                                         ? currentPage * paginationPageSize
                                         : contacts.length
                                 }}
-                                of {{ contacts.length }}</span
+                                de {{ contacts.length }}</span
                             >
                             <feather-icon
                                 icon="ChevronDownIcon"
@@ -72,12 +85,12 @@
                         class="mb-4 md:mb-0 mr-4"
                         v-model="searchQuery"
                         @input="updateSearchQuery"
-                        placeholder="Search..."
+                        placeholder="Buscar..."
                     />
                     <vs-button
                         class="mb-4 md:mb-0"
                         @click="gridApi.exportDataAsCsv()"
-                        >Export as CSV</vs-button
+                        >Exportar XLS</vs-button
                     >
                 </div>
             </div>
@@ -131,62 +144,116 @@ export default {
             },
             columnDefs: [
                 {
-                    headerName: "First Name",
-                    field: "firstname",
-                    width: 175,
+                    headerName: "SKU",
+                    field: "sku",
+                    width: 100,
                     filter: true,
-                    checkboxSelection: true,
-                    headerCheckboxSelectionFilteredOnly: true,
-                    headerCheckboxSelection: true,
+                    // checkboxSelection: true,
+                    // headerCheckboxSelectionFilteredOnly: true,
+                    // headerCheckboxSelection: true,
                 },
                 {
-                    headerName: "Last Name",
-                    field: "lastname",
-                    filter: true,
-                    width: 175,
-                },
-                {
-                    headerName: "Email",
-                    field: "email",
-                    filter: true,
-                    width: 250,
-                    pinned: "left",
-                },
-                {
-                    headerName: "Company",
-                    field: "company",
-                    filter: true,
-                    width: 250,
-                },
-                {
-                    headerName: "City",
-                    field: "city",
+                    headerName: "Externo",
+                    field: "externo",
                     filter: true,
                     width: 150,
                 },
                 {
-                    headerName: "Country",
-                    field: "country",
+                    headerName: "Producto",
+                    field: "producto",
+                    filter: true,
+                    width: 250,
+                    // pinned: "left",
+                },
+                {
+                    headerName: "Grupo",
+                    field: "grupo",
                     filter: true,
                     width: 150,
                 },
                 {
-                    headerName: "State",
-                    field: "state",
+                    headerName: "Seccion",
+                    field: "seccion",
+                    filter: true,
+                    width: 200,
+                },
+                {
+                    headerName: "Clasificación",
+                    field: "clasificacion",
+                    filter: true,
+                    width: 200,
+                },
+                {
+                    headerName: "Proveedor",
+                    field: "proveedor",
+                    filter: true,
+                    width: 150,
+                },
+                {
+                    headerName: "Estilo",
+                    field: "estilo",
+                    filter: true,
+                    width: 175,
+                },
+                {
+                    headerName: "Color",
+                    field: "color",
                     filter: true,
                     width: 125,
                 },
                 {
-                    headerName: "Zip",
-                    field: "zip",
+                    headerName: "Talla",
+                    field: "talla",
                     filter: true,
                     width: 125,
                 },
                 {
-                    headerName: "Followers",
-                    field: "followers",
-                    filter: "agNumberColumnFilter",
+                    headerName: "Marca",
+                    field: "marca",
+                    filter: true,
                     width: 125,
+                },
+                {
+                    headerName: "Costo",
+                    field: "costo",
+                    filter: true,
+                    width: 100,
+                },
+                {
+                    headerName: "Venta",
+                    field: "venta",
+                    filter: true,
+                    width: 100,
+                },
+                {
+                    headerName: "Último Movimiento",
+                    field: "ultimo-movimiento",
+                    filter: true,
+                    width: 175,
+                },
+                {
+                    headerName: "Última Venta",
+                    field: "ultima-venta",
+                    filter: true,
+                    width: 175,
+                },
+                {
+                    headerName: "Última Recepción",
+                    field: "ultima-recepcion",
+                    filter: true,
+                    width: 175,
+                },
+                {
+                    headerName: "MC DETAL - DPISAR GP",
+                    field: "gp",
+                    filter: true,
+                    width: 100,
+                },
+                {
+                    headerName: "MC DETAL - DPISAR D",
+                    field: "d",
+                    filter: true,
+                    width: 100,
                 },
             ],
             contacts,
