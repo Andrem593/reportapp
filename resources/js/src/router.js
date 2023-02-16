@@ -51,13 +51,39 @@ const router = new Router({
                     name: "home",
                     component: () => import("./views/Home.vue"),
                 },
+                // {
+                //     path: "/page2",
+                //     name: "page-2",
+                //     component: () => import("./views/Page2.vue"),
+                // },
+                // =============================================================================
+                // Reportes
+                // =============================================================================
                 {
-                    path: "/page2",
-                    name: "page-2",
-                    component: () => import("./views/Page2.vue"),
+                    path: "/reportes/inventario",
+                    name: "reportes-inventario",
+                    component: () =>
+                        import(
+                            "./views/pages/admin/reportes/ReportesInventario.vue"
+                        ),
+                    meta: {
+                        rule: "editor",
+                    },
+                },
+                {
+                    path: "/reportes/ventas",
+                    name: "reportes-ventas",
+                    component: () =>
+                        import(
+                            "./views/pages/admin/reportes/ReportesVentas.vue"
+                        ),
+                    meta: {
+                        rule: "admin",
+                    },
                 },
             ],
         },
+        
         // =============================================================================
         // FULL PAGE LAYOUTS
         // =============================================================================
