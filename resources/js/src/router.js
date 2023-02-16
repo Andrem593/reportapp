@@ -38,34 +38,6 @@ const router = new Router({
                     },
                     component: () => import("./views/Page2.vue"),
                 },
-            ],
-        },
-        {
-            // =============================================================================
-            // MAIN LAYOUT ROUTES
-            // =============================================================================
-            path: "",
-            component: () => import("@/layouts/full-page/FullPage.vue"),
-            children: [
-                // =============================================================================
-                // Theme Routes
-                // =============================================================================
-                {
-                    path: "/dashboard",
-                    name: "home",
-                    meta: {
-                        requiresAuth: true,
-                    },
-                    component: () => import("./views/Home.vue"),
-                },
-                // {
-                //     path: "/page2",
-                //     name: "page-2",
-                //     component: () => import("./views/Page2.vue"),
-                // },
-                // =============================================================================
-                // Reportes
-                // =============================================================================
                 {
                     path: "/reportes/inventario",
                     name: "reportes-inventario",
@@ -96,7 +68,27 @@ const router = new Router({
                 },
             ],
         },
-        
+        {
+            // =============================================================================
+            // MAIN LAYOUT ROUTES
+            // =============================================================================
+            path: "",
+            component: () => import("@/layouts/full-page/FullPage.vue"),
+            children: [
+                // =============================================================================
+                // Theme Routes
+                // =============================================================================
+                {
+                    path: "/dashboard",
+                    name: "home",
+                    meta: {
+                        requiresAuth: true,
+                    },
+                    component: () => import("./views/Home.vue"),
+                },
+            ],
+        },
+
         // =============================================================================
         // FULL PAGE LAYOUTS
         // =============================================================================
@@ -108,7 +100,6 @@ const router = new Router({
                     path: "/login",
                     name: "login",
                     component: () => import("@/views/pages/Login.vue"),
-
                 },
                 // =============================================================================
                 // PAGES
@@ -147,9 +138,9 @@ router.beforeEach((to, from, next) => {
             next({ name: "login" });
         }
     } else {
-        if(from.name == "login" && localStorage.getItem("token") != null) {
+        if (from.name == "login" && localStorage.getItem("token") != null) {
             next({ name: "home" });
-        }else{
+        } else {
             next();
         }
     }
