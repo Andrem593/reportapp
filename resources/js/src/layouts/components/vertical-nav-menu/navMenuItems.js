@@ -10,7 +10,7 @@
 
 export default [
   {
-    url: '/',
+    url: '/dashboard',
     name: 'Home',
     slug: 'home',
     icon: 'HomeIcon'
