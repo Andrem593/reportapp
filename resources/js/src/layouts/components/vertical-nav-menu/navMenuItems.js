@@ -38,7 +38,7 @@ export default [
       },
       {
         url: '/reportes/inventario',
-        name: 'Inventario',
+        name: 'Existencia de Inventario',
         icon: 'BoxIcon',
         slug: 'reportes-inventario',
         i18n: 'Inventario',
