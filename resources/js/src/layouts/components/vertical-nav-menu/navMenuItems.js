@@ -10,11 +10,17 @@
 
 export default [
   {
-    url: '/',
+    url: '/dashboard',
     name: 'Home',
     slug: 'home',
     icon: 'HomeIcon'
   },
+  // {
+  //   url: '/page2',
+  //   name: 'Page 2',
+  //   slug: 'page2',
+  //   icon: 'FileIcon'
+  // },
   {
     url: null,
     name: 'Reportes',
@@ -27,13 +33,15 @@ export default [
         url: '/reportes/inventario',
         name: 'Inventario',
         slug: 'reportes-inventario',
-        i18n: 'Inventario'
+        i18n: 'Inventario',
+        icon: 'BoxIcon'
       },
       {
         url: '/reportes/ventas',
         name: 'Ventas',
         slug: 'reportes-ventas',
-        i18n: 'Ventas'
+        i18n: 'Ventas',
+        icon: 'TrendingUpIcon'
       }
     ]
   },

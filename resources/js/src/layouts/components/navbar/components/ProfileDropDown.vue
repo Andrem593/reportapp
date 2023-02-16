@@ -9,7 +9,8 @@
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
 
       <div class="con-img ml-3">
-        <img v-if="activeUserInfo.photoURL" key="onlineImg" :src="activeUserInfo.photoURL" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
+        <img v-if="activeUserInfo.photoURL" key="onlineImg" :src="activeUserInfo.photoURL" alt="user-img" width="40"
+          height="40" class="rounded-full shadow-md cursor-pointer block" />
       </div>
 
       <vs-dropdown-menu class="vx-navbar-dropdown">
@@ -21,24 +22,24 @@
           </li>
 
           <!-- <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
-            <feather-icon icon="MailIcon" svgClasses="w-4 h-4" />
-            <span class="ml-2">Inbox</span>
-          </li>
+              <feather-icon icon="MailIcon" svgClasses="w-4 h-4" />
+              <span class="ml-2">Inbox</span>
+            </li>
 
-          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
-            <feather-icon icon="CheckSquareIcon" svgClasses="w-4 h-4" />
-            <span class="ml-2">Tasks</span>
-          </li>
+            <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
+              <feather-icon icon="CheckSquareIcon" svgClasses="w-4 h-4" />
+              <span class="ml-2">Tasks</span>
+            </li>
 
-          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
-            <feather-icon icon="MessageSquareIcon" svgClasses="w-4 h-4" />
-            <span class="ml-2">Chat</span>
-          </li>
+            <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
+              <feather-icon icon="MessageSquareIcon" svgClasses="w-4 h-4" />
+              <span class="ml-2">Chat</span>
+            </li>
 
-          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
-            <feather-icon icon="HeartIcon" svgClasses="w-4 h-4" />
-            <span class="ml-2">Wish List</span>
-          </li> -->
+            <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
+              <feather-icon icon="HeartIcon" svgClasses="w-4 h-4" />
+              <span class="ml-2">Wish List</span>
+            </li> -->
 
           <vs-divider class="m-1" />
 
@@ -49,28 +50,30 @@
         </ul>
       </vs-dropdown-menu>
     </vs-dropdown>
-  </div>
+</div>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
 
     }
   },
   computed: {
-    activeUserInfo () {
+    activeUserInfo() {
       return this.$store.state.AppActiveUser
     },
-    username(){
+    username() {
       return this.$store.state.username
     }
   },
   methods: {
-    async logout () {      
+    async logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userInfo");
       await this.$store.dispatch("doLogin", this.username);
-      this.$router.push('/login').catch(() => {})
+      this.$router.push('/login').catch(() => { })
     }
   }
 }

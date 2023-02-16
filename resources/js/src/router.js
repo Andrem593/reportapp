@@ -51,12 +51,52 @@ const router = new Router({
                 // Theme Routes
                 // =============================================================================
                 {
-                    path: "/login",
-                    name: "login",
-                    component: () => import("@/views/pages/Login.vue"),
+                    path: "/dashboard",
+                    name: "home",
+                    meta: {
+                        requiresAuth: true,
+                    },
+                    component: () => import("./views/Home.vue"),
+                },
+                // {
+                //     path: "/page2",
+                //     name: "page-2",
+                //     component: () => import("./views/Page2.vue"),
+                // },
+                // =============================================================================
+                // Reportes
+                // =============================================================================
+                {
+                    path: "/reportes/inventario",
+                    name: "reportes-inventario",
+                    meta: {
+                        requiresAuth: true,
+                    },
+                    component: () =>
+                        import(
+                            "./views/pages/admin/reportes/ReportesInventario.vue"
+                        ),
+                    meta: {
+                        rule: "editor",
+                    },
+                },
+                {
+                    path: "/reportes/ventas",
+                    name: "reportes-ventas",
+                    meta: {
+                        requiresAuth: true,
+                    },
+                    component: () =>
+                        import(
+                            "./views/pages/admin/reportes/ReportesVentas.vue"
+                        ),
+                    meta: {
+                        rule: "admin",
+                    },
                 },
             ],
         },
+        
         // =============================================================================
         // FULL PAGE LAYOUTS
         // =============================================================================
@@ -64,6 +104,12 @@ const router = new Router({
             path: "",
             component: () => import("@/layouts/full-page/FullPage.vue"),
             children: [
+                {
+                    path: "/login",
+                    name: "login",
+                    component: () => import("@/views/pages/Login.vue"),
+
+                },
                 // =============================================================================
                 // PAGES
                 // =============================================================================
