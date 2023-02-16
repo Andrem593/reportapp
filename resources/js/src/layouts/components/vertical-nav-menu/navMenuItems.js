@@ -30,18 +30,25 @@ export default [
     i18n: 'Reportes',
     submenu: [
       {
+        url: '/reportes/carga-masiva',
+        name: 'Carga Masiva',
+        icon: 'UploadIcon',
+        slug: 'reportes-carga-masiva',
+        i18n: 'Carga Masiva',
+      },
+      {
         url: '/reportes/inventario',
-        name: 'Inventario',
+        name: 'Existencia de Inventario',
+        icon: 'BoxIcon',
         slug: 'reportes-inventario',
         i18n: 'Inventario',
-        icon: 'BoxIcon'
       },
       {
         url: '/reportes/ventas',
         name: 'Ventas',
+        icon: 'TrendingUpIcon',
         slug: 'reportes-ventas',
         i18n: 'Ventas',
-        icon: 'TrendingUpIcon'
       }
     ]
   },

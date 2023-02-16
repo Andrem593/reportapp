@@ -47,6 +47,20 @@ const router = new Router({
                     component: () => import("./views/Page2.vue"),
                 },
                 {
+                    path: "/reportes/carga-masiva",
+                    name: "reportes-carga-masiva",
+                    meta: {
+                        requiresAuth: true,
+                    },
+                    component: () =>
+                        import(
+                            "./views/pages/admin/reportes/CargaMasiva.vue"
+                        ),
+                    meta: {
+                        rule: "editor",
+                    },
+                },
+                {
                     path: "/reportes/inventario",
                     name: "reportes-inventario",
                     meta: {
