@@ -16,9 +16,25 @@ export default [
     icon: 'HomeIcon'
   },
   {
-    url: '/page2',
-    name: 'Page 2',
-    slug: 'page2',
-    icon: 'FileIcon'
-  }
+    url: null,
+    name: 'Reportes',
+    // tag: '2',
+    // tagColor: 'warning',
+    icon: 'PieChartIcon',
+    i18n: 'Reportes',
+    submenu: [
+      {
+        url: '/reportes/inventario',
+        name: 'Inventario',
+        slug: 'reportes-inventario',
+        i18n: 'Inventario'
+      },
+      {
+        url: '/reportes/ventas',
+        name: 'Ventas',
+        slug: 'reportes-ventas',
+        i18n: 'Ventas'
+      }
+    ]
+  },
 ]
