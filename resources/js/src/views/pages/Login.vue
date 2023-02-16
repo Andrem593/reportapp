@@ -55,15 +55,18 @@ export default {
     }
   },
   methods: {
-    login() {
+    async login() {
       this.$vs.loading()
       this.$http.post('/api/auth/login', {
         email: this.email,
         password: this.password,
         remember_me: this.checkbox_remember_me
-      }).then(response  => {
+      }).then(async response => {
         this.$vs.loading.close()
         this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken
+        localStorage.setItem('token', response.data.accessToken)
+        await this.$store.dispatch("updateUserInfo", response.data.user)
+        await this.$store.dispatch("doLogin", response.data.user.name);        
         this.$router.push({ name: 'home' })
       }).catch(error => {
         console.log(error);

@@ -16,8 +16,9 @@ import themeConfig, { colors } from '@/../themeConfig.js'
 // /////////////////////////////////////////////
 
 const userDefaults = {
-  uid         : 0,          // From Auth
-  displayName : 'John Doe', // From Auth
+  uid         : 0,
+  id          :'',          // From Auth
+  name        : 'John Doe', // From Auth
   about       : 'Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.',
   photoURL    : require('@assets/images/portrait/small/avatar-s-11.jpg'), // From Auth
   status      : 'online',
@@ -49,6 +50,8 @@ const is_touch_device = () => {
 // /////////////////////////////////////////////
 
 const state = {
+  auth                    : null,
+  username                : null,
   AppActiveUser           : userDefaults,
   bodyOverlay             : false,
   isVerticalNavMenuActive : true,

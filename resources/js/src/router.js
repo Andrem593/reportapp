@@ -1,14 +1,7 @@
-/*=========================================================================================
-  File Name: router.js
-  Description: Routes for vue-router. Lazy loading is enabled.
-  ----------------------------------------------------------------------------------------
-  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
-==========================================================================================*/
-
 import Vue from "vue";
 import Router from "vue-router";
+
+import store from "./store/store";
 
 Vue.use(Router);
 
@@ -24,15 +17,26 @@ const router = new Router({
             // MAIN LAYOUT ROUTES
             // =============================================================================
             path: "",
-            component: () => import("@/layouts/full-page/FullPage.vue"),
+            component: () => import("./layouts/main/Main.vue"),
             children: [
                 // =============================================================================
                 // Theme Routes
                 // =============================================================================
                 {
                     path: "/",
-                    name: "login",
-                    component: () => import("@/views/pages/Login.vue"),
+                    name: "home",
+                    meta: {
+                        requiresAuth: true,
+                    },
+                    component: () => import("./views/Home.vue"),
+                },
+                {
+                    path: "/page2",
+                    name: "page-2",
+                    meta: {
+                        requiresAuth: true,
+                    },
+                    component: () => import("./views/Page2.vue"),
                 },
             ],
         },
@@ -41,20 +45,15 @@ const router = new Router({
             // MAIN LAYOUT ROUTES
             // =============================================================================
             path: "",
-            component: () => import("./layouts/main/Main.vue"),
+            component: () => import("@/layouts/full-page/FullPage.vue"),
             children: [
                 // =============================================================================
                 // Theme Routes
                 // =============================================================================
                 {
-                    path: "/dashboard",
-                    name: "home",
-                    component: () => import("./views/Home.vue"),
-                },
-                {
-                    path: "/page2",
-                    name: "page-2",
-                    component: () => import("./views/Page2.vue"),
+                    path: "/login",
+                    name: "login",
+                    component: () => import("@/views/pages/Login.vue"),
                 },
             ],
         },
@@ -88,6 +87,25 @@ router.afterEach(() => {
     const appLoading = document.getElementById("loading-bg");
     if (appLoading) {
         appLoading.style.display = "none";
+    }
+});
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        if (localStorage.getItem("token") != null) {
+            // obtener usuario autenticado
+            let user = JSON.parse(localStorage.getItem("userInfo"));
+            store.dispatch("updateUserInfo", user);
+            next();
+        } else {
+            next({ name: "login" });
+        }
+    } else {
+        if(from.name == "login" && localStorage.getItem("token") != null) {
+            next({ name: "home" });
+        }else{
+            next();
+        }
     }
 });
 
