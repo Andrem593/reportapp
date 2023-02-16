@@ -16,7 +16,7 @@
                         <div class="vx-col sm:w-full md:w-full lg:w-1/2 self-center d-theme-dark-bg" >
                             <div class="px-8 pt-8 register-tabs-container">
                                 <div class="vx-card__title mb-4">
-                                    <h4 class="mb-4">Reporte - Exostencia de Inventario</h4>
+                                    <h4 class="mb-4">Reporte - Existencia de Inventario</h4>
                                 </div>
                             </div>
                         </div>
