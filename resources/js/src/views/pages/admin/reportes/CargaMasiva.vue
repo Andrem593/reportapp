@@ -4,7 +4,7 @@
             <div slot="no-body" class="full-page-bg-color">
                 <div class="vx-row no-gutter">
                     <div
-                        class="vx-col sm:w-full md:w-full lg:w-1/2 self-center d-theme-dark-bg"
+                        class="vx-col sm:w-full md:w-full lg:w-full self-center d-theme-dark-bg"
                     >
                         <div class="px-8 pt-8 register-tabs-container">
                             <div class="vx-card__title mb-4">
@@ -14,19 +14,27 @@
                                     masiva.
                                 </p>
 
+                                <!-- <form id="frm_inventario"> -->
                                 <vx-input-group class="mb-base">
-                                    <vs-input v-model="input4" placeholder="Seleccionar Archivo"/>
+                                    <vs-input
+                                        type="file"
+                                        name="file"
+                                        ref="file"
+                                        accept=".XLSX, .XLS, .CSV"
+                                    />
 
                                     <template slot="append">
                                         <div class="append-text btn-addon">
                                             <vs-button
                                                 color="primary"
                                                 type="border"
+                                                @click.prevent="CargarExcel"
                                                 >Cargar Archivo</vs-button
                                             >
                                         </div>
                                     </template>
                                 </vx-input-group>
+                                <!-- </form> -->
                             </div>
                         </div>
                     </div>
@@ -35,3 +43,39 @@
         </vx-card>
     </div>
 </template>
+<script>
+export default {
+    components: {},
+    data() {
+        return {};
+    },
+    created() {},
+    methods: {
+        CargarExcel() {
+            // let datos = new FormData();
+            // datos.append('archivo_excel', this.$refs.file.files[0]);
+
+            let formData = new FormData();
+            formData.append("archivo_excel", this.file);
+
+            // let $mainFormInventario = $('#frm_inventario');
+            // let data = new FormData($mainFormInventario);
+
+            axios
+                .post("inventario/cargar-excel", formData)
+                .then((result) => {
+                    // this.$swal({
+                    //     title: 'Carga excel',
+                    //     text: 'Se cargaron los datos correctamente',
+                    //     icon: 'success',
+                    //     confirmButtonText: 'Ok'
+                    // })
+                })
+                .catch((err) => {});
+        },
+        // handleFileUpload(){
+        //     this.file = this.$refs.file.files[0];
+        // }
+    },
+};
+</script>

@@ -8,8 +8,8 @@
       @dragenter="handleDragover"
       class="px-8 py-16 cursor-pointer text-center border-2 border-dashed d-theme-border-grey-light d-theme-dark-bg text-xl">
       <feather-icon icon="UploadCloudIcon" svgClasses="h-16 w-16 stroke-current text-grey" class="block" />
-      <span>Drop Excel File or </span>
-      <span class="font-medium text-primary" @click.stop="$refs.fileInput.click()">Browse</span>
+      <span>Soltar archivo excel o </span>
+      <span class="font-medium text-primary" @click.stop="$refs.fileInput.click()">Examinar</span>
       <!-- <vs-button type="border" @click.stop="$refs.fileInput.click()">Browse</vs-button> -->
     </div>
   </div>

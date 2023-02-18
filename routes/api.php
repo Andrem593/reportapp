@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InventarioController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,6 +25,8 @@ Route::group(['prefix' => 'auth'], function () {
       Route::get('user', [AuthController::class, 'user']);
     });
 });
+
+Route::post('inventario/cargar-excel', [InventarioController::class, 'cargar_excel'])->name('inventario.cargar-excel');
 
 Route::get('holamundo', function () {
     return 'Hola Mundo';
