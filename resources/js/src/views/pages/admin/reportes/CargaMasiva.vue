@@ -20,6 +20,7 @@
                                         type="file"
                                         name="file"
                                         ref="file"
+                                        @change="handleFileUpload"
                                         accept=".XLSX, .XLS, .CSV"
                                     />
 
@@ -47,13 +48,16 @@
 export default {
     components: {},
     data() {
-        return {};
+        return {
+            file: ''
+        };
     },
     created() {},
     methods: {
         CargarExcel() {
             // let datos = new FormData();
             // datos.append('archivo_excel', this.$refs.file.files[0]);
+            
 
             let formData = new FormData();
             formData.append("archivo_excel", this.file);
@@ -61,21 +65,27 @@ export default {
             // let $mainFormInventario = $('#frm_inventario');
             // let data = new FormData($mainFormInventario);
 
-            axios
-                .post("inventario/cargar-excel", formData)
+            this.$http
+                .post("api/inventario/cargar-excel", formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
                 .then((result) => {
-                    // this.$swal({
-                    //     title: 'Carga excel',
-                    //     text: 'Se cargaron los datos correctamente',
-                    //     icon: 'success',
-                    //     confirmButtonText: 'Ok'
-                    // })
+                    this.$swal({
+                        title: 'Carga excel',
+                        text: 'Se cargaron los datos correctamente',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    })
                 })
                 .catch((err) => {});
         },
-        // handleFileUpload(){
-        //     this.file = this.$refs.file.files[0];
-        // }
+        handleFileUpload(){
+            // console.log();
+            // console.log(this.$refs.file.files[0]);
+            this.file = document.querySelector('input[type=file]').files[0];
+        }
     },
 };
 </script>
