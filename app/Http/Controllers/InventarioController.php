@@ -11,5 +11,9 @@ class InventarioController extends Controller
     public function cargar_excel(Request $request){
         $path = $request->file('archivo_excel')->getRealPath();
         Excel::import(new InventarioImport, $path);
+
+        return response()->json([
+            'message' => 'ok'
+        ]);
     }
 }

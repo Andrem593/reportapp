@@ -29,6 +29,7 @@
                                             <vs-button
                                                 color="primary"
                                                 type="border"
+                                                
                                                 @click.prevent="CargarExcel"
                                                 >Cargar Archivo</vs-button
                                             >
@@ -49,15 +50,16 @@ export default {
     components: {},
     data() {
         return {
-            file: ''
+            file: "",
         };
     },
     created() {},
     methods: {
-        CargarExcel() {
+        async CargarExcel() {
             // let datos = new FormData();
             // datos.append('archivo_excel', this.$refs.file.files[0]);
-            
+
+            this.$vs.loading();
 
             let formData = new FormData();
             formData.append("archivo_excel", this.file);
@@ -67,25 +69,29 @@ export default {
 
             this.$http
                 .post("api/inventario/cargar-excel", formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    })
-                .then((result) => {
-                    this.$swal({
-                        title: 'Carga excel',
-                        text: 'Se cargaron los datos correctamente',
-                        icon: 'success',
-                        confirmButtonText: 'Ok'
-                    })
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
                 })
-                .catch((err) => {});
+                .then(async response => {
+                    console.log(response);
+                    this.$vs.loading.close()
+                    this.$swal({
+                        title: "Carga excel",
+                        text: "Se cargaron los datos correctamente",
+                        icon: "success",
+                        confirmButtonText: "Ok",
+                    });
+                })
+                .catch(err => {
+                    this.$vs.loading.close()
+                });
         },
-        handleFileUpload(){
+        handleFileUpload() {
             // console.log();
             // console.log(this.$refs.file.files[0]);
-            this.file = document.querySelector('input[type=file]').files[0];
-        }
+            this.file = document.querySelector("input[type=file]").files[0];
+        },
     },
 };
 </script>

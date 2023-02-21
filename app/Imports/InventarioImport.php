@@ -4,20 +4,22 @@ namespace App\Imports;
 
 use App\Inventario;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class InventarioImport implements ToModel
+class InventarioImport implements WithHeadingRow, ToModel
 {
     /**
      * @param array $row
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
+
     public function model(array $row)
     {
         return new Inventario([
-            'sku'     => $row[0],
-            'externo'    => $row[1],
-            'producto' => $row[2],
+            'sku'     => $row['sku'],
+            'externo'    => $row['externo'],
+            'producto' => $row['producto'],
         ]);
     }
 }
