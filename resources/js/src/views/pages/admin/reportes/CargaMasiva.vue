@@ -29,7 +29,6 @@
                                             <vs-button
                                                 color="primary"
                                                 type="border"
-                                                
                                                 @click.prevent="CargarExcel"
                                                 >Cargar Archivo</vs-button
                                             >
@@ -55,7 +54,7 @@ export default {
     },
     created() {},
     methods: {
-        async CargarExcel() {
+        CargarExcel() {
             // let datos = new FormData();
             // datos.append('archivo_excel', this.$refs.file.files[0]);
 
@@ -66,6 +65,8 @@ export default {
 
             // let $mainFormInventario = $('#frm_inventario');
             // let data = new FormData($mainFormInventario);
+            // se hace referencia al this para acceder a la variables globales en este metodo
+            let left = this;
 
             this.$http
                 .post("api/inventario/cargar-excel", formData, {
@@ -73,18 +74,19 @@ export default {
                         "Content-Type": "multipart/form-data",
                     },
                 })
-                .then(async response => {
-                    console.log(response);
-                    this.$vs.loading.close()
-                    this.$swal({
-                        title: "Carga excel",
+                .then((response) => {
+                    console.log("hola mundo");
+                    left.$vs.loading.close();
+                    left.$vs.notify({
+                        title: "Mensaje",
                         text: "Se cargaron los datos correctamente",
-                        icon: "success",
-                        confirmButtonText: "Ok",
+                        color: "success",
+                        iconPack: "feather",
+                        icon: "icon-alert-circle",
                     });
                 })
-                .catch(err => {
-                    this.$vs.loading.close()
+                .catch((err) => {
+                    left.$vs.loading.close();
                 });
         },
         handleFileUpload() {
