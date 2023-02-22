@@ -139,7 +139,7 @@ router.beforeEach((to, from, next) => {
             next({ name: "login" });
         }
     } else {
-        if (from.name == "login" && localStorage.getItem("token") != null || from.name == null && localStorage.getItem("token") != null) {
+        if (from.name == "login" && localStorage.getItem("token") != null) {
             next({ name: "home" });
         } else {
             next();
