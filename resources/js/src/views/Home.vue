@@ -359,7 +359,6 @@ export default {
     }
   },
   methods: {
-
   },
 };
 </script>
