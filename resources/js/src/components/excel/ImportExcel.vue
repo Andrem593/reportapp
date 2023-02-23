@@ -30,7 +30,8 @@ export default {
       excelData: {
         header: null,
         results: null,
-        meta: null
+        meta: null,
+        document: null,
       }
     }
   },
@@ -115,6 +116,7 @@ export default {
       return /\.(xlsx|xls|csv)$/.test(file.name)
     },
     uploadFile (file) {
+      this.excelData.document = file
       this.$refs['fileInput'].value = null // fix can't select the same excel
       this.readerData(file)
     }

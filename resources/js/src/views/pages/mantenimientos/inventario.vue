@@ -6,16 +6,17 @@
             { title: 'Inventario', active: true },
         ]" />
         <vx-card class="mt-4 p-4">
-            <form-wizard color="rgba(var(--vs-primary), 1)" :title="null" :subtitle="null" finishButtonText="Submit"
-                @on-complete="formSubmitted">
+            <form-wizard color="rgba(var(--vs-primary), 1)" :title="null" :subtitle="null" finishButtonText="Cargar"
+                next-button-text="Siguiente" @on-complete="formSubmitted">
                 <tab-content title="Cargar Archivo" class="mb-5" icon="feather icon-upload">
 
                     <!-- tab 1 content -->
                     <div>
-                        <div class="mb-8">
+                        <div class="mb-8" v-if="!upload">
                             <import-excel :onSuccess="loadDataInTable" />
                         </div>
                         <div v-if="tableData.length && header.length">
+                            <h2>Previsualización</h2>
                             <vs-table stripe pagination :max-items="50" search :data="tableData">
                                 <template slot="header">
                                     <h4>{{ sheetName }}</h4>
@@ -39,14 +40,31 @@
                 </tab-content>
 
                 <!-- tab 2 content -->
-                <tab-content title="Step 2" class="mb-5">
-                    <div class="vx-row">
-
+                <tab-content title="Asignación" class="mb-5" icon="feather icon-grid">
+                    <div v-if="upload">
+                        <div class="vx-row flex justify-around">
+                            <div class="vx-col w-1/4">
+                                <b>Nombre de Columnas</b>
+                            </div>
+                            <div class="vx-col w-1/4">
+                                <b>Asignar al campo</b>
+                            </div>
+                        </div>
+                        <div class="vx-row flex justify-around" :key="heading" v-for="heading, i in header">
+                            <div class="vx-col w-1/4">
+                                <p class="p-4"> <b>{{ heading }}</b></p>
+                            </div>
+                            <div class="vx-col w-1/4">
+                                <vs-select class="p-2" v-model="select[i]" :key="i">
+                                    <vs-select-item :key="j" :value="option" :text="option" v-for="option,j in selectOptions"/>
+                                </vs-select>
+                            </div>
+                        </div>
                     </div>
                 </tab-content>
 
                 <!-- tab 3 content -->
-                <tab-content title="Step 3" class="mb-5">
+                <tab-content title="Cargar a Base" class="mb-5" icon="feather icon-database">
                     <div class="vx-row">
 
                     </div>
@@ -72,14 +90,50 @@ export default {
         return {
             tableData: [],
             header: [],
-            sheetName: ''
+            sheetName: '',
+            upload: false,
+            document: null,
+            select: [],
+            selectOptions: [
+                'sku',
+                'externo',
+                'producto',
+                'grupo',
+                'seccion',
+                'clasificacion',
+                'proveedor',
+                'estilo',
+                'color',
+                'talla',
+                'marca',
+                'inventario_costo',
+                'inventario_venta',
+                'ultimo_movimiento',
+                'ultima_venta',
+                'ultima_recepcion',
+            ]
         };
     },
     methods: {
-        loadDataInTable({ results, header, meta }) {
-            this.header = header
-            this.tableData = results
-            this.sheetName = meta.sheetName
+        loadDataInTable(data) {
+            this.header = data.header
+            this.tableData = data.results
+            this.sheetName = data.meta.sheetName
+            this.document = data.document
+            this.upload = true
+            this.asignarOptions()
+        },
+        asignarOptions() {
+            this.header.map((option, i) => {
+                if(this.selectOptions[i]){
+                    this.select[i] = this.selectOptions[i]
+                }else{
+                    this.select[i] = 'NO IMPORTAR'
+                }
+            })
+        },
+        formSubmitted() {
+            console.log('form submitted');
         }
     },
 };

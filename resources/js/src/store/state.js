@@ -58,7 +58,7 @@ const state = {
   is_touch_device         : is_touch_device(),
   mainLayoutType          : themeConfig.mainLayoutType || 'vertical',
   navbarSearchAndPinList,
-  reduceButton            : themeConfig.sidebarCollapsed,
+  reduceButton            : true || themeConfig.sidebarCollapsed ,
   verticalNavMenuWidth    : 'default',
   verticalNavMenuItemsMin : false,
   scrollY                 : 0,
