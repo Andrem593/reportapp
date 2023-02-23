@@ -70,6 +70,12 @@ const router = new Router({
                     meta: {requiresAuth: true},
                     component: () =>import("./views/pages/mantenimientos/tiendaForm.vue")
                 },
+                {
+                    path: "/mantenimientos/inventario",
+                    name: "inventario",
+                    meta: {requiresAuth: true},
+                    component: () =>import("./views/pages/mantenimientos/inventario.vue")
+                },
             ],
         },
         // =============================================================================

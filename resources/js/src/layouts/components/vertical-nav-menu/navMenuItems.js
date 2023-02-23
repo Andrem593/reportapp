@@ -25,7 +25,11 @@ export default [
         name: 'Tiendas',
         icon: 'StoreIcon',
         slug: 'tiendas',
-        i18n: 'Tiendas',
+      },
+      {
+        url: '/mantenimientos/inventario',
+        name: 'Inventario',        
+        slug: 'inventario',
       },
     ]
   },
