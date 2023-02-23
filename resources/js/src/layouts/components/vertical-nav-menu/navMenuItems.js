@@ -15,12 +15,20 @@ export default [
     slug: 'home',
     icon: 'HomeIcon'
   },
-  // {
-  //   url: '/page2',
-  //   name: 'Page 2',
-  //   slug: 'page2',
-  //   icon: 'FileIcon'
-  // },
+  {
+    url: null,
+    name: 'Mantenimientos',
+    icon: 'SettingsIcon',
+    submenu: [
+      {
+        url: '/mantenimientos/tiendas',
+        name: 'Tiendas',
+        icon: 'StoreIcon',
+        slug: 'tiendas',
+        i18n: 'Tiendas',
+      },
+    ]
+  },
   {
     url: null,
     name: 'Reportes',

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TiendasController;
 use App\Http\Controllers\InventarioController;
 
 /*
@@ -17,17 +18,17 @@ use App\Http\Controllers\InventarioController;
 */
 
 Route::group(['prefix' => 'auth'], function () {
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('register', [AuthController::class, 'register']);
+  Route::post('login', [AuthController::class, 'login']);
+  Route::post('register', [AuthController::class, 'register']);
 
-    Route::group(['middleware' => 'auth:sanctum'], function() {
-      Route::get('logout', [AuthController::class, 'logout']);
-      Route::get('user', [AuthController::class, 'user']);
-    });
+  Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('user', [AuthController::class, 'user']);
+  });
+});
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+  Route::get('tienda', [TiendasController::class, 'index']);  
 });
 
 Route::post('inventario/cargar-excel', [InventarioController::class, 'cargar_excel'])->name('inventario.cargar-excel');
-
-Route::get('holamundo', function () {
-    return 'Hola Mundo';
-});

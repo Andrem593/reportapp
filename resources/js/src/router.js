@@ -25,68 +25,44 @@ const router = new Router({
                 {
                     path: "/",
                     name: "home",
-                    meta: {
-                        requiresAuth: true,
-                    },
+                    meta: {requiresAuth: true},
                     component: () => import("./views/Home.vue"),
                 },
                 {
                     path: "/dashboard",
                     name: "dashboard",
-                    meta: {
-                        requiresAuth: true,
-                    },
+                    meta: {requiresAuth: true},
                     component: () => import("./views/Home.vue"),
                 },
                 {
                     path: "/page2",
                     name: "page-2",
-                    meta: {
-                        requiresAuth: true,
-                    },
+                    meta: {requiresAuth: true},
                     component: () => import("./views/Page2.vue"),
                 },
                 {
                     path: "/reportes/carga-masiva",
                     name: "reportes-carga-masiva",
-                    meta: {
-                        requiresAuth: true,
-                    },
-                    component: () =>
-                        import(
-                            "./views/pages/admin/reportes/CargaMasiva.vue"
-                        ),
-                    meta: {
-                        rule: "editor",
-                    },
+                    meta: {requiresAuth: true},
+                    component: () =>import("./views/pages/admin/reportes/CargaMasiva.vue"),
                 },
                 {
                     path: "/reportes/inventario",
                     name: "reportes-inventario",
-                    meta: {
-                        requiresAuth: true,
-                    },
-                    component: () =>
-                        import(
-                            "./views/pages/admin/reportes/ReportesInventario.vue"
-                        ),
-                    meta: {
-                        rule: "editor",
-                    },
+                    meta: {requiresAuth: true},
+                    component: () =>import("./views/pages/admin/reportes/ReportesInventario.vue"),
                 },
                 {
                     path: "/reportes/ventas",
                     name: "reportes-ventas",
-                    meta: {
-                        requiresAuth: true,
-                    },
-                    component: () =>
-                        import(
-                            "./views/pages/admin/reportes/ReportesVentas.vue"
-                        ),
-                    meta: {
-                        rule: "admin",
-                    },
+                    meta: {requiresAuth: true},
+                    component: () =>import("./views/pages/admin/reportes/ReportesVentas.vue")
+                },
+                {
+                    path: "/mantenimientos/tiendas",
+                    name: "mantenimientos-tiendas",
+                    meta: {requiresAuth: true},
+                    component: () =>import("./views/pages/mantenimientos/tiendas.vue")
                 },
             ],
         },
