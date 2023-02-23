@@ -16,7 +16,7 @@ class TiendasController extends Controller
      */
     public function index()
     {
-        return tienda::VuePaginate();
+        return tienda::where('estado',1)->VuePaginate();
     }
 
     /**
