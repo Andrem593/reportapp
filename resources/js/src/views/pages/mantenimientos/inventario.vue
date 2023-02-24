@@ -6,8 +6,8 @@
             { title: 'Inventario', active: true },
         ]" />
         <vx-card class="mt-4 p-4">
-            <form-wizard color="rgba(var(--vs-primary), 1)" :title="null" :subtitle="null" finishButtonText="Cargar"
-                next-button-text="Siguiente" @on-complete="formSubmitted">
+            <form-wizard color="rgba(var(--vs-primary), 1)" :title="null" :subtitle="null" finishButtonText="Finalizar"
+                next-button-text="Siguiente" back-button-text="Atras" @on-complete="formSubmitted" @on-change="cargarData">
                 <tab-content title="Cargar Archivo" class="mb-5" icon="feather icon-upload">
 
                     <!-- tab 1 content -->
@@ -40,7 +40,7 @@
                 </tab-content>
 
                 <!-- tab 2 content -->
-                <tab-content title="Asignación" class="mb-5" icon="feather icon-grid">
+                <tab-content title="Asignación" class="mb-5" icon="feather icon-grid" :before-change="despuesAsignar">
                     <div v-if="upload">
                         <div class="vx-row flex justify-around">
                             <div class="vx-col w-1/4">
@@ -55,9 +55,11 @@
                                 <p class="p-4"> <b>{{ heading }}</b></p>
                             </div>
                             <div class="vx-col w-1/4">
-                                <vs-select class="p-2" v-model="select[i]" :key="i">
-                                    <vs-select-item :key="j" :value="option" :text="option" v-for="option,j in selectOptions"/>
-                                </vs-select>
+                                <select class="p-2 form-select" v-model="select[i]" :key="i">
+                                    <option :key="j" :value="option" v-for="option, j in selectOptions">
+                                        {{ option }}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -65,8 +67,16 @@
 
                 <!-- tab 3 content -->
                 <tab-content title="Cargar a Base" class="mb-5" icon="feather icon-database">
-                    <div class="vx-row">
+                    <div class="vx-row flex justify-center p-4">
+                        <div class="vx-col w-1/2 p-2 mb-4 mt-4" v-if="charge">
+                            <b>Importando datos</b>
+                            <vs-progress indeterminate color="primary">primary</vs-progress>
+                        </div>
 
+                        <div class="vx-col w-1/2 p-2 mb-4 mt-4" v-else>
+                            <statistics-card-line hideChart class="p-4" icon="CheckIcon"
+                                statisticTitle="Se Importó el archivo correctamente" statistic="Carga Completada" color="success" />
+                        </div>
                     </div>
                 </tab-content>
             </form-wizard>
@@ -78,13 +88,15 @@
 import ImportExcel from '@/components/excel/ImportExcel.vue'
 import { FormWizard, TabContent } from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+import StatisticsCardLine from '@/components/statistics-cards/StatisticsCardLine.vue'
 
 export default {
     name: 'Inventario',
     components: {
         FormWizard,
         TabContent,
-        ImportExcel
+        ImportExcel,
+        StatisticsCardLine
     },
     data() {
         return {
@@ -92,8 +104,10 @@ export default {
             header: [],
             sheetName: '',
             upload: false,
+            charge: true,
             document: null,
             select: [],
+            asignacion: [],
             selectOptions: [
                 'sku',
                 'externo',
@@ -111,6 +125,7 @@ export default {
                 'ultimo_movimiento',
                 'ultima_venta',
                 'ultima_recepcion',
+                'NO IMPORTAR'
             ]
         };
     },
@@ -122,18 +137,92 @@ export default {
             this.document = data.document
             this.upload = true
             this.asignarOptions()
+            this.asignarTiendas()
         },
         asignarOptions() {
             this.header.map((option, i) => {
-                if(this.selectOptions[i]){
+                if (this.selectOptions[i] != undefined || this.selectOptions[i] != null) {
                     this.select[i] = this.selectOptions[i]
-                }else{
-                    this.select[i] = 'NO IMPORTAR'
+                } else {
+                    this.select[i] = this.selectOptions[this.selectOptions.length - 1]
                 }
             })
         },
+        asignarTiendas() {
+            this.$http.get('/api/tienda?per_page=all')
+                .then(response => {
+                    response.data.map((tienda, i) => {
+                        this.selectOptions.push(tienda.tienda)
+                    })
+                })
+                .catch(error => {
+                    this.$vs.noty({
+                        color: 'danger',
+                        title: 'Error',
+                        text: 'Error al cargar las tiendas'
+                    })
+                });
+        },
+        despuesAsignar() {
+            this.asignacion = []
+            this.header.map((option, i) => {
+                this.asignacion.push({
+                    'columna': option,
+                    'campo_bd': this.select[i]
+                })
+            })
+            return true
+        },
+        cargarData() {
+            if (this.asignacion.length > 0) {
+                let formData = new FormData();
+                formData.append("archivo_excel", this.document);
+                formData.append("asignacion", JSON.stringify(this.asignacion));
+                this.$http.post('/api/inventario/carga', formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                })
+                    .then(response => {
+                        this.charge = false
+                    })
+                    .catch(error => {
+                        this.$vs.notify({
+                            color: 'danger',
+                            title: 'Error',
+                            text: 'Error al cargar los datos'
+                        })
+                    });
+            }
+        },
         formSubmitted() {
-            console.log('form submitted');
+            this.tableData = [],
+                this.header = [],
+                this.sheetName = '',
+                this.upload = false,
+                this.document = null,
+                this.select = [],
+                this.asignacion = [],
+                this.selectOptions = [
+                    'sku',
+                    'externo',
+                    'producto',
+                    'grupo',
+                    'seccion',
+                    'clasificacion',
+                    'proveedor',
+                    'estilo',
+                    'color',
+                    'talla',
+                    'marca',
+                    'inventario_costo',
+                    'inventario_venta',
+                    'ultimo_movimiento',
+                    'ultima_venta',
+                    'ultima_recepcion',
+                    'NO IMPORTAR'
+                ]
+            this.$router.push({ name: 'home' })
         }
     },
 };

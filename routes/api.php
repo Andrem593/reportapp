@@ -27,7 +27,8 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-  Route::apiResource('tienda', TiendasController::class);  
+  Route::apiResource('tienda', TiendasController::class);
+  Route::post('inventario/carga', [InventarioController::class, 'carga_data']);  
 });
 
 Route::post('inventario/cargar-excel', [InventarioController::class, 'cargar_excel'])->name('inventario.cargar-excel');
