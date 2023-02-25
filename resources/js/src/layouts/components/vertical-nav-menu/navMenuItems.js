@@ -31,6 +31,11 @@ export default [
         name: 'Inventario',        
         slug: 'inventario',
       },
+      {
+        url: '/mantenimientos/venta',
+        name: 'Venta',        
+        slug: 'mantenimientos-venta',
+      },
     ]
   },
   {

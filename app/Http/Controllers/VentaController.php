@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\VentasImport;
 use App\Models\Venta;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class VentaController extends Controller
 {
@@ -12,6 +14,19 @@ class VentaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function carga_data(Request $request)
+    {
+        $path = $request->file('archivo_excel')->getRealPath();
+        $asignacion = json_decode($request->asignacion);
+
+        Excel::import(new VentasImport($asignacion), $path);
+
+        return response()->json([
+            'message' => 'ok'
+        ]);
+    }
+
     public function index()
     {
         //

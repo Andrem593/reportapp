@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\VentaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['middleware' => 'auth:sanctum'], function () {
   Route::apiResource('tienda', TiendasController::class);
   Route::post('inventario/carga', [InventarioController::class, 'carga_data']);  
+  Route::post('venta/carga', [VentaController::class, 'carga_data']);  
 });
 
 Route::post('inventario/cargar-excel', [InventarioController::class, 'cargar_excel'])->name('inventario.cargar-excel');

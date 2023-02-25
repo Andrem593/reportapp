@@ -76,6 +76,12 @@ const router = new Router({
                     meta: {requiresAuth: true},
                     component: () =>import("./views/pages/mantenimientos/inventario.vue")
                 },
+                {
+                    path: "/mantenimientos/venta",
+                    name: "mantenimientos-venta",
+                    meta: {requiresAuth: true},
+                    component: () =>import("./views/pages/mantenimientos/Venta.vue")
+                },
             ],
         },
         // =============================================================================

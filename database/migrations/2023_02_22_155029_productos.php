@@ -15,8 +15,8 @@ class Productos extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('sku');
-            $table->integer('externo');
+            $table->string('sku');
+            $table->string('externo');
             $table->string('producto');
             $table->string('grupo');
             $table->string('seccion');
