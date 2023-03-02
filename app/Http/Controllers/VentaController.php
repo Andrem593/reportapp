@@ -18,9 +18,8 @@ class VentaController extends Controller
     public function carga_data(Request $request)
     {
         $path = $request->file('archivo_excel')->getRealPath();
-        $asignacion = json_decode($request->asignacion);
 
-        Excel::import(new VentasImport($asignacion), $path);
+        Excel::import(new VentasImport, $path);
 
         return response()->json([
             'message' => 'ok'

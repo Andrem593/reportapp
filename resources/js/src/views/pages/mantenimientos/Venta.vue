@@ -12,7 +12,7 @@
                     <b>Formato de Carga</b>
                 </div>
                 <div>
-                    <vs-button @click="downloadFormat" type="filled" color="primary">
+                    <vs-button type="filled" color="primary">
                         Descargar Formato
                     </vs-button>
                 </div>
@@ -151,26 +151,25 @@ export default {
             this.upload = true;
         },
         cargarData() {
-            if (this.asignacion.length > 0) {
-                let formData = new FormData();
-                formData.append("archivo_excel", this.document);               
-                this.$http
-                    .post("/api/venta/carga", formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    })
-                    .then((response) => {
-                        this.charge = false;
-                    })
-                    .catch((error) => {
-                        this.$vs.notify({
-                            color: "danger",
-                            title: "Error",
-                            text: "Error al cargar los datos",
-                        });
+            let formData = new FormData();
+            formData.append("archivo_excel", this.document);
+            this.$http
+                .post("/api/venta/carga", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((response) => {
+                    this.charge = false;
+                })
+                .catch((error) => {
+                    this.$vs.notify({
+                        color: "danger",
+                        title: "Error",
+                        text: "Error al cargar los datos",
                     });
-            }
+                });
+
         },
         formSubmitted() {
             this.tableData = [];
