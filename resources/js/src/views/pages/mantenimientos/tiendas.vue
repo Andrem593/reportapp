@@ -78,8 +78,10 @@ export default {
         getDataTiendas() {
             this.$vs.loading();
             this.$http.get('/api/tienda').then(response => {
+                if (response.data.data.length > 0) {                
+                    this.tiendas = response.data.data;
+                }
                 this.$vs.loading.close();
-                this.tiendas = response.data.data;
             }).catch(error => {
                 this.$vs.loading.close();
                 this.$vs.notify({

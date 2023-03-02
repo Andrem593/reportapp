@@ -15,12 +15,14 @@ class CreateVentasTable extends Migration
     {
         Schema::create('ventas', function (Blueprint $table) {
             $table->id();
-
-            $table->integer("tienda_id");
-            $table->integer("cliente_id");
+            $table->unsignedBigInteger("tienda_id");
+            $table->foreign('tienda_id')->references('id')->on('tiendas');
+            $table->unsignedBigInteger("cliente_id");
+            $table->foreign('cliente_id')->references('id')->on('clientes');
             $table->string("division");
             $table->string("departamento");
-            $table->integer("producto_id");
+            $table->unsignedBigInteger("producto_id");
+            $table->foreign('producto_id')->references('id')->on('productos');
             $table->integer("descuento_actual");
             $table->float("pvp_factura", 8, 2);
             $table->float("pvp", 8, 2);
@@ -73,8 +75,6 @@ class CreateVentasTable extends Migration
             $table->float("banco_solidario", 8, 2);            
             $table->float("banco_machala", 8, 2);            
             $table->float("otros_bancos", 8, 2);
-            
-            $table->timestamps();
         });
     }
 

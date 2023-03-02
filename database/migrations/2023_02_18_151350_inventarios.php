@@ -15,11 +15,11 @@ class Inventarios extends Migration
     {
         Schema::create('inventarios', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('sku');
-            $table->string('externo');
-            $table->string('producto');
-
-            $table->timestamps();
+            $table->unsignedBigInteger('tienda');
+            $table->foreign('tienda')->references('id')->on('tiendas');
+            $table->unsignedBigInteger('producto');            
+            $table->foreign('producto')->references('id')->on('productos');
+            $table->integer('cantidad');
         });
     }
 
@@ -30,6 +30,6 @@ class Inventarios extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('inventarios');
     }
 }

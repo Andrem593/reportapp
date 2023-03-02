@@ -57,7 +57,7 @@
                             <div class="vx-col w-1/4">
                                 <select class="p-2 form-select" v-model="select[i]" :key="i">
                                     <option :key="j" :value="option" v-for="option, j in selectOptions">
-                                        {{ option }}
+                                        {{( typeof option == 'object') ? option.tienda : option }}
                                     </option>
                                 </select>
                             </div>
@@ -152,7 +152,7 @@ export default {
             this.$http.get('/api/tienda?per_page=all')
                 .then(response => {
                     response.data.map((tienda, i) => {
-                        this.selectOptions.push(tienda.tienda)
+                        this.selectOptions.push(tienda)
                     })
                 })
                 .catch(error => {
@@ -165,6 +165,7 @@ export default {
         },
         despuesAsignar() {
             this.asignacion = []
+            console.log(this.selectOptions);
             this.header.map((option, i) => {
                 this.asignacion.push({
                     'columna': option,
