@@ -32,6 +32,7 @@ class InventarioController extends Controller
 
     public function get_inventario(){
         // return Inventario::all();
+        // $inventario = 
         return response()->json(Inventario::all());
     }
 }
