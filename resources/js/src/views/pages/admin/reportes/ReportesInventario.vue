@@ -125,6 +125,7 @@
 
 <script>
 import { AgGridVue } from "ag-grid-vue";
+import contacts from "./data.json";
 
 import "@sass/vuexy/extraComponents/agGridStyleOverride.scss";
 
@@ -217,31 +218,31 @@ export default {
                 },
                 {
                     headerName: "Costo",
-                    field: "inventario_costo",
+                    field: "costo",
                     filter: true,
                     width: 100,
                 },
                 {
                     headerName: "Venta",
-                    field: "inventario_venta",
+                    field: "venta",
                     filter: true,
                     width: 100,
                 },
                 {
                     headerName: "Último Movimiento",
-                    field: "ultimo_movimiento",
+                    field: "ultimo-movimiento",
                     filter: true,
                     width: 175,
                 },
                 {
                     headerName: "Última Venta",
-                    field: "ultima_venta",
+                    field: "ultima-venta",
                     filter: true,
                     width: 175,
                 },
                 {
                     headerName: "Última Recepción",
-                    field: "ultima_recepcion",
+                    field: "ultima-recepcion",
                     filter: true,
                     width: 175,
                 },
