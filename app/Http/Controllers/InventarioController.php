@@ -7,6 +7,7 @@ use App\Imports\InventarioImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\InventarioAsigImport;
 use App\Models\Inventario;
+use Illuminate\Support\Facades\DB;
 
 class InventarioController extends Controller
 {
@@ -32,7 +33,11 @@ class InventarioController extends Controller
 
     public function get_inventario(){
         // return Inventario::all();
-        // $inventario = 
-        return response()->json(Inventario::all());
+        $inventario = DB::table('inventarios')
+        ->join('productos', 'productos.id', '=', 'inventarios.producto')
+        ->join('tiendas', 'tiendas.id', '=', 'inventarios.tienda')
+        ->select('productos.*')
+        ->get();
+        return response()->json($inventario);
     }
 }
