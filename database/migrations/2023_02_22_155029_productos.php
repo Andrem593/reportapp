@@ -19,18 +19,18 @@ class Productos extends Migration
             $table->string('externo');
             $table->string('producto');
             $table->string('grupo');
-            $table->string('seccion');
-            $table->string('clasificacion');
-            $table->string('proveedor');
-            $table->string('estilo');
-            $table->string('color');
-            $table->string('talla');
-            $table->string('marca');
-            $table->float('inventario_costo');
-            $table->float('inventario_venta');
-            $table->dateTime('ultimo_movimiento');
-            $table->dateTime('ultima_venta');
-            $table->dateTime('ultima_recepcion');
+            $table->string('seccion')->nullable();
+            $table->string('clasificacion')->nullable();
+            $table->string('proveedor')->nullable();
+            $table->string('estilo')->nullable();
+            $table->string('color')->nullable();
+            $table->string('talla')->nullable();
+            $table->string('marca')->nullable();
+            $table->float('inventario_costo')->nullable();
+            $table->float('inventario_venta')->nullable();
+            $table->dateTime('ultimo_movimiento')->nullable();
+            $table->dateTime('ultima_venta')->nullable();
+            $table->dateTime('ultima_recepcion')->nullable();
         });
     }
 

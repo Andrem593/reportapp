@@ -1,28 +1,26 @@
 <template>
     <div>
-        <vs-breadcrumb
-            :items="[
-                { title: 'Home', url: '/' },
-                { title: 'Mant.' },
-                { title: 'Venta', active: true },
-            ]"
-        />
+        <vs-breadcrumb :items="[
+            { title: 'Home', url: '/' },
+            { title: 'Mant.' },
+            { title: 'Venta', active: true },
+        ]" />
+        <vx-card class="my-3 p-4">
+            <div class="flex justify-between">
+                <div class="my-auto">
+                    <b>Formato de Carga</b>
+                </div>
+                <div>
+                    <vs-button type="filled" color="primary">
+                        Descargar Formato
+                    </vs-button>
+                </div>
+            </div>
+        </vx-card>
         <vx-card class="mt-4 p-4">
-            <form-wizard
-                color="rgba(var(--vs-primary), 1)"
-                :title="null"
-                :subtitle="null"
-                finishButtonText="Finalizar"
-                next-button-text="Siguiente"
-                back-button-text="Atras"
-                @on-complete="formSubmitted"
-                @on-change="cargarData"
-            >
-                <tab-content
-                    title="Cargar Archivo"
-                    class="mb-5"
-                    icon="feather icon-upload"
-                >
+            <form-wizard color="rgba(var(--vs-primary), 1)" :title="null" :subtitle="null" finishButtonText="Finalizar"
+                next-button-text="Siguiente" back-button-text="Atras" @on-complete="formSubmitted" @on-change="cargarData">
+                <tab-content title="Cargar Archivo" class="mb-5" icon="feather icon-upload">
                     <!-- tab 1 content -->
                     <div>
                         <div class="mb-8" v-if="!upload">
@@ -30,39 +28,21 @@
                         </div>
                         <div v-if="tableData.length && header.length">
                             <h2>Previsualización</h2>
-                            <vs-table
-                                stripe
-                                pagination
-                                :max-items="50"
-                                search
-                                :data="tableData"
-                            >
+                            <vs-table stripe pagination :max-items="50" search :data="tableData">
                                 <template slot="header">
                                     <h4>{{ sheetName }}</h4>
                                 </template>
 
                                 <template slot="thead">
-                                    <vs-th
-                                        :sort-key="heading"
-                                        v-for="heading in header"
-                                        :key="heading"
-                                        >{{ heading }}</vs-th
-                                    >
+                                    <vs-th :sort-key="heading" v-for="heading in header" :key="heading">{{ heading
+                                    }}</vs-th>
                                 </template>
 
                                 <template slot-scope="{ data }">
-                                    <vs-tr
-                                        :data="tr"
-                                        :key="indextr"
-                                        v-for="(tr, indextr) in data"
-                                    >
-                                        <vs-td
-                                            :data="col"
-                                            v-for="(col, indexcol) in data[
-                                                indextr
-                                            ]"
-                                            :key="indexcol + col"
-                                        >
+                                    <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+                                        <vs-td :data="col" v-for="(col, indexcol) in data[
+                                            indextr
+                                        ]" :key="indexcol + col">
                                             {{ col }}
                                         </vs-td>
                                     </vs-tr>
@@ -73,7 +53,7 @@
                 </tab-content>
 
                 <!-- tab 2 content -->
-                <tab-content
+                <!-- <tab-content
                     title="Asignación"
                     class="mb-5"
                     icon="feather icon-grid"
@@ -115,31 +95,20 @@
                             </div>
                         </div>
                     </div>
-                </tab-content>
+                </tab-content> -->
 
                 <!-- tab 3 content -->
-                <tab-content
-                    title="Cargar a Base"
-                    class="mb-5"
-                    icon="feather icon-database"
-                >
+                <tab-content title="Cargar a Base" class="mb-5" icon="feather icon-database">
                     <div class="vx-row flex justify-center p-4">
                         <div class="vx-col w-1/2 p-2 mb-4 mt-4" v-if="charge">
                             <b>Importando datos</b>
-                            <vs-progress indeterminate color="primary"
-                                >primary</vs-progress
-                            >
+                            <vs-progress indeterminate color="primary">primary</vs-progress>
                         </div>
 
                         <div class="vx-col w-1/2 p-2 mb-4 mt-4" v-else>
-                            <statistics-card-line
-                                hideChart
-                                class="p-4"
-                                icon="CheckIcon"
-                                statisticTitle="Se Importó el archivo correctamente"
-                                statistic="Carga Completada"
-                                color="success"
-                            />
+                            <statistics-card-line hideChart class="p-4" icon="CheckIcon"
+                                statisticTitle="Se Importó el archivo correctamente" statistic="Carga Completada"
+                                color="success" />
                         </div>
                     </div>
                 </tab-content>
@@ -170,87 +139,6 @@ export default {
             upload: false,
             charge: true,
             document: null,
-            select: [],
-            asignacion: [],
-            selectOptions: [
-                "unidad_negocio",
-                "tienda",
-                "ciudad",
-                "identificacion",
-                "cliente",
-                "genero",
-                "correo",
-                "telefono",
-                "telefono2",
-                "direccion",
-                "fecha_nacimiento",
-                "division",
-                "departamento",
-                "clasificacion",
-                "sku",
-                "codigo",
-                "producto",
-                "ultima_compra",
-                "estilo",
-                "color",
-                "talla",
-                "marca",
-                "grupo",
-                "seccion",
-                "descuento_actual",
-                "pvp_factura",
-                "pvp",
-                "pvp_mayorista",
-                "punto_operacion",
-                "fecha",
-                "hora",
-                "vendedor",
-                "cajero",
-                "tipo",
-                "transaccion",
-                "cantidad",
-                "costo",
-                "subtotal",
-                "descuento_manual",
-                "descuento_sistema",
-                "descuento",
-                "venta_neta",
-                "impuesto",
-                "total",
-                "utilidad",
-                "gm",
-                "efectivo",
-                "tarjeta_credito",
-                "tarjeta_debito",
-                "nota_credito",
-                "cupo_credito",
-                "cheque",
-                "otros",
-                "devolucion",
-                "medianet",
-                "datafast",
-                "austro",
-                "visa",
-                "mastercard",
-                "american_express",
-                "diners",
-                "discovery",
-                "pacificard",
-                "bankcard",
-                "alia",
-                "otras_tarjetas",
-                "banco_pichincha",
-                "banco_pacifico",
-                "banco_guayaquil",
-                "banco_bolivariano",
-                "banco_produbanco",
-                "banco_austro",
-                "banco_internacional",
-                "banco_solidario",
-                "banco_machala",
-                "otros_bancos",
-                "NO IMPORTAR",
-            ],
         };
     },
     methods: {
@@ -260,158 +148,34 @@ export default {
             this.sheetName = data.meta.sheetName;
             this.document = data.document;
             this.upload = true;
-            this.asignarOptions();
-            this.asignarTiendas();
-        },
-        asignarOptions() {
-            this.header.map((option, i) => {
-                if (
-                    this.selectOptions[i] != undefined ||
-                    this.selectOptions[i] != null
-                ) {
-                    this.select[i] = this.selectOptions[i];
-                } else {
-                    this.select[i] =
-                        this.selectOptions[this.selectOptions.length - 1];
-                }
-            });
-        },
-        asignarTiendas() {
-            this.$http
-                .get("/api/tienda?per_page=all")
-                .then((response) => {
-                    response.data.map((tienda, i) => {
-                        this.selectOptions.push(tienda.tienda);
-                    });
-                })
-                .catch((error) => {
-                    this.$vs.noty({
-                        color: "danger",
-                        title: "Error",
-                        text: "Error al cargar las tiendas",
-                    });
-                });
-        },
-        despuesAsignar() {
-            this.asignacion = [];
-            this.header.map((option, i) => {
-                this.asignacion.push({
-                    columna: option,
-                    campo_bd: this.select[i],
-                });
-            });
-            return true;
         },
         cargarData() {
-            if (this.asignacion.length > 0) {
-                let formData = new FormData();
-                formData.append("archivo_excel", this.document);
-                formData.append("asignacion", JSON.stringify(this.asignacion));
-                this.$http
-                    .post("/api/venta/carga", formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    })
-                    .then((response) => {
-                        this.charge = false;
-                    })
-                    .catch((error) => {
-                        this.$vs.notify({
-                            color: "danger",
-                            title: "Error",
-                            text: "Error al cargar los datos",
-                        });
+            let formData = new FormData();
+            formData.append("archivo_excel", this.document);
+            formData.append("asignacion", JSON.stringify(this.asignacion));
+            this.$http
+                .post("/api/venta/carga", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((response) => {
+                    this.charge = false;
+                })
+                .catch((error) => {
+                    this.$vs.notify({
+                        color: "danger",
+                        title: "Error",
+                        text: "Error al cargar los datos",
                     });
-            }
+                });
         },
         formSubmitted() {
-            (this.tableData = []),
-                (this.header = []),
-                (this.sheetName = ""),
-                (this.upload = false),
-                (this.document = null),
-                (this.select = []),
-                (this.asignacion = []),
-                (this.selectOptions = [
-                    "unidad_negocio",
-                    "tienda",
-                    "ciudad",
-                    "identificacion",
-                    "cliente",
-                    "genero",
-                    "correo",
-                    "telefono",
-                    "telefono2",
-                    "direccion",
-                    "fecha_nacimiento",
-                    "division",
-                    "departamento",
-                    "clasificacion",
-                    "sku",
-                    "codigo",
-                    "producto",
-                    "ultima_compra",
-                    "estilo",
-                    "color",
-                    "talla",
-                    "marca",
-                    "grupo",
-                    "seccion",
-                    "descuento_actual",
-                    "pvp_factura",
-                    "pvp",
-                    "pvp_mayorista",
-                    "punto_operacion",
-                    "fecha",
-                    "hora",
-                    "vendedor",
-                    "cajero",
-                    "tipo",
-                    "transaccion",
-                    "cantidad",
-                    "costo",
-                    "subtotal",
-                    "descuento_manual",
-                    "descuento_sistema",
-                    "descuento",
-                    "venta_neta",
-                    "impuesto",
-                    "total",
-                    "utilidad",
-                    "gm",
-                    "efectivo",
-                    "tarjeta_credito",
-                    "tarjeta_debito",
-                    "nota_credito",
-                    "cupo_credito",
-                    "cheque",
-                    "otros",
-                    "devolucion",
-                    "medianet",
-                    "datafast",
-                    "austro",
-                    "visa",
-                    "mastercard",
-                    "american_express",
-                    "diners",
-                    "discovery",
-                    "pacificard",
-                    "bankcard",
-                    "alia",
-                    "otras_tarjetas",
-                    "banco_pichincha",
-                    "banco_pacifico",
-                    "banco_guayaquil",
-                    "banco_bolivariano",
-                    "banco_produbanco",
-                    "banco_austro",
-                    "banco_internacional",
-                    "banco_solidario",
-                    "banco_machala",
-                    "otros_bancos",
-                    "NO IMPORTAR",
-                ]);
+            this.tableData = [];
+            this.header = [];
+            this.sheetName = "";
+            this.upload = false;
+            this.document = null;
             this.$router.push({ name: "home" });
         },
     },

@@ -16,8 +16,8 @@ class Tiendas extends Migration
         Schema::create('tiendas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('tienda');
-            $table->string('provincia');
-            $table->string('ciudad');
+            $table->string('provincia')->nullable();
+            $table->string('ciudad')->nullable();
             $table->integer('estado');            
         });
     }

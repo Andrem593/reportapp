@@ -51,7 +51,7 @@ class Venta extends Model
         'mastercard', 
         'american_express',
         'diners',
-        'discover',
+        'discovery',
         "pacificard",            
         "bankcard",            
         "alia",            
