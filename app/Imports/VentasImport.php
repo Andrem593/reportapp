@@ -24,7 +24,7 @@ class VentasImport implements ToModel
 
     public function model(array $row)
     {
-        dd($row['tienda']);
+        // dd($row['tienda']);
         // $tienda = tienda::where('tienda', $row['tienda'])->where('ciudad', $row['ciudad'])->first()->id;
         // if (!$tienda) {
         //     $create = tienda::create([

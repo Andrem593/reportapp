@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Imports\InventarioImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\InventarioAsigImport;
+use App\Models\Inventario;
 
 class InventarioController extends Controller
 {
@@ -27,5 +28,10 @@ class InventarioController extends Controller
         return response()->json([
             'message' => 'ok'
         ]);
+    }
+
+    public function get_inventario(){
+        // return Inventario::all();
+        return response()->json(Inventario::all());
     }
 }

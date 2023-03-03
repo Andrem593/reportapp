@@ -9,19 +9,22 @@
 
 <template>
     <div id="ag-grid-demo" class="mb-4">
-
         <vx-card>
             <div slot="no-body" class="full-page-bg-color">
-                    <div class="vx-row no-gutter">
-                        <div class="vx-col sm:w-full md:w-full lg:w-1/2 self-center d-theme-dark-bg" >
-                            <div class="px-8 pt-8 register-tabs-container">
-                                <div class="vx-card__title mb-4">
-                                    <h4 class="mb-4">Reporte - Existencia de Inventario</h4>
-                                </div>
+                <div class="vx-row no-gutter">
+                    <div
+                        class="vx-col sm:w-full md:w-full lg:w-1/2 self-center d-theme-dark-bg"
+                    >
+                        <div class="px-8 pt-8 register-tabs-container">
+                            <div class="vx-card__title mb-4">
+                                <h4 class="mb-4">
+                                    Reporte - Existencia de Inventario
+                                </h4>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
             <!-- TABLE ACTION ROW -->
             <div class="flex flex-wrap justify-between items-center">
@@ -38,13 +41,13 @@
                                 }}
                                 -
                                 {{
-                                    contacts.length -
+                                    inventario.length -
                                         currentPage * paginationPageSize >
                                     0
                                         ? currentPage * paginationPageSize
-                                        : contacts.length
+                                        : inventario.length
                                 }}
-                                de {{ contacts.length }}</span
+                                de {{ inventario.length }}</span
                             >
                             <feather-icon
                                 icon="ChevronDownIcon"
@@ -100,7 +103,7 @@
                 class="ag-theme-material w-100 my-4 ag-grid-table"
                 :columnDefs="columnDefs"
                 :defaultColDef="defaultColDef"
-                :rowData="contacts"
+                :rowData="inventario"
                 rowSelection="multiple"
                 colResizeDefault="shift"
                 :animateRows="true"
@@ -256,7 +259,7 @@ export default {
                     width: 100,
                 },
             ],
-            contacts,
+            inventario : [],
         };
     },
     watch: {
@@ -293,6 +296,14 @@ export default {
         },
     },
     mounted() {
+        this.$http.get("/api/get-inventario").then((res) => {
+            this.inventario = res.data;
+
+            console.log(res.data);
+        });
+
+
+
         this.gridApi = this.gridOptions.api;
 
         /* =================================================================
