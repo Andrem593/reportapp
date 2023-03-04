@@ -55,7 +55,7 @@ class VentasImport implements ToModel, WithHeadingRow
         $venta = Venta::where('transaccion', $row['transaccion'])->first();
 
         if ($venta == null){
-            Ventas::create([
+            Venta::create([
                 'tienda_id' => $tienda->id,
                 'cliente_id' => $cliente->id,
                 'division' => $row['division'],
@@ -75,6 +75,9 @@ class VentasImport implements ToModel, WithHeadingRow
                 'cantidad' => $row['cantidad'],
                 'costo' => $row['costo'],
                 'subtotal' => $row['subtotal'],
+                'por_descuento_manual' => $row['por_desc_manual'],
+                'por_descuento_sistema' => $row['por_desc_sistema'],
+                'por_descuento' => $row['por_desc'],
                 'descuento_manual' => $row['desc_manual'],
                 'descuento_sistema' => $row['desc_sistema'],
                 'descuento' => $row['descuento'],

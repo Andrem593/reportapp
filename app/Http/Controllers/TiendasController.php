@@ -103,4 +103,11 @@ class TiendasController extends Controller
             'message' => 'Tienda eliminada correctamente'
         ], 200);
     }
+
+    public function get_ciudades()
+    {
+        $ciudades = Tienda::select('ciudad')->distinct()->get();
+
+        return $ciudades;
+    }
 }

@@ -3,8 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\TiendasController;
+use App\Http\Controllers\InventarioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,10 +29,17 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-  Route::apiResource('tienda', TiendasController::class);
+  //Rutas con TiendasController
+  Route::apiResource('tienda', 'TiendasController');
+  Route::get('tienda-ciudades', [TiendasController::class, 'get_ciudades']);
+
   Route::post('inventario/carga', [InventarioController::class, 'carga_data']);  
-  Route::post('venta/carga', [VentaController::class, 'carga_data']);  
   Route::get('get-inventario', [InventarioController::class, 'get_inventario']);  
+
+  //Rutas con VentaController
+  Route::get('get-punto-operacion', [VentaController::class, 'get_punto_operacion']);
+  Route::post('venta/carga', [VentaController::class, 'carga_data']); 
+  Route::post('venta/reporte-ventas-marca', [VentaController::class, 'get_reporte_ventas_marca']);
 });
 
 Route::post('inventario/cargar-excel', [InventarioController::class, 'cargar_excel'])->name('inventario.cargar-excel');

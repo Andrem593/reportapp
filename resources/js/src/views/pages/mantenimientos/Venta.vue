@@ -150,25 +150,24 @@ export default {
             this.upload = true;
         },
         cargarData() {
-            let formData = new FormData();
-            formData.append("archivo_excel", this.document);
-            formData.append("asignacion", JSON.stringify(this.asignacion));
-            this.$http
-                .post("/api/venta/carga", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then((response) => {
-                    this.charge = false;
-                })
-                .catch((error) => {
-                    this.$vs.notify({
-                        color: "danger",
-                        title: "Error",
-                        text: "Error al cargar los datos",
+            if (this.document != null) {
+                let formData = new FormData();
+                formData.append("archivo_excel", this.document);
+                formData.append("asignacion", JSON.stringify(this.asignacion));
+                this.$http
+                    .post("/api/venta/carga", formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    })
+                    .then((response) => {
+                        this.charge = false;
+                        this.document = null;
+                    })
+                    .catch((error) => {
+                        console.log(error);
                     });
-                });
+            }
         },
         formSubmitted() {
             this.tableData = [];

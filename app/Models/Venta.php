@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Venta extends Model
@@ -28,6 +29,9 @@ class Venta extends Model
         'cantidad',
         'costo',
         'subtotal',
+        'por_descuento_manual',
+        'por_descuento_sistema',
+        'por_descuento',
         'descuento_manual',
         'descuento_sistema',
         'descuento',
@@ -69,6 +73,7 @@ class Venta extends Model
     ];
 
     public $with = ['cliente', 'tienda', 'producto'];
+    public $appends = ['anio'];
     protected $primaryKey = 'id';
     public $timestamps = false;
 
@@ -85,5 +90,10 @@ class Venta extends Model
     public function producto()
     {
         return $this->belongsTo(Producto::class, 'producto_id', 'id');
+    }
+
+    public function getAnioAttribute()
+    {
+        return Carbon::parse($this->fecha)->format('Y');
     }
 }

@@ -165,7 +165,6 @@ export default {
         },
         despuesAsignar() {
             this.asignacion = []
-            console.log(this.selectOptions);
             this.header.map((option, i) => {
                 this.asignacion.push({
                     'columna': option,
