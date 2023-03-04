@@ -62,11 +62,25 @@ export default [
       },
       {
         url: '/reportes/ventas',
-        name: 'Ventas',
+        name: 'Ventas - Marca',
         icon: 'TrendingUpIcon',
         slug: 'reportes-ventas',
         i18n: 'Ventas',
-      }
+      },
+      {
+        url: '/reportes/ventas/operacion',
+        name: 'Ventas - Operacion',
+        icon: 'TrendingUpIcon',
+        slug: 'reportes-ventas-operacion',
+        i18n: 'Ventas',
+      },
+      {
+        url: '/reportes/ventas/clasificacion',
+        name: 'Ventas - Clasificacion',
+        icon: 'TrendingUpIcon',
+        slug: 'reportes-ventas-clasificacion',
+        i18n: 'Ventas',
+      },
     ]
   },
 ]

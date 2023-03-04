@@ -59,6 +59,18 @@ const router = new Router({
                     component: () =>import("./views/pages/admin/reportes/ReportesVentas.vue")
                 },
                 {
+                    path: "/reportes/ventas/operacion",
+                    name: "reportes-ventas-operacion",
+                    meta: {requiresAuth: true},
+                    component: () =>import("./views/pages/admin/reportes/ReportesVentasOperacion.vue")
+                },
+                {
+                    path: "/reportes/ventas/clasificacion",
+                    name: "reportes-ventas-clasificacion",
+                    meta: {requiresAuth: true},
+                    component: () =>import("./views/pages/admin/reportes/ReportesVentasClasificacion.vue")
+                },
+                {
                     path: "/mantenimientos/tiendas",
                     name: "mantenimientos-tiendas",
                     meta: {requiresAuth: true},

@@ -21,11 +21,12 @@ class VentasImport implements ToModel, WithHeadingRow
     {
         //cambios
         $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha'])->format('Y-m-d');
+
         $tienda = tienda::where('tienda', $row['tienda'])->first();
         $cliente = Cliente::where('identificacion', $row['identificacion'])->first();
         $producto = Producto::where('sku', $row['sku'])->first();
         
-        if ($tienda == null) $tienda = Tienda::create(['nombre' => $row['tienda'], 'ciudad'=>$row['ciudad']]);        
+        if ($tienda == null) $tienda = Tienda::create(['tienda' => $row['tienda'], 'ciudad'=>$row['ciudad']]);        
         if ($cliente == null) {
             $cliente = Cliente::create([
                 'identificacion' => $row['identificacion'],
@@ -49,6 +50,8 @@ class VentasImport implements ToModel, WithHeadingRow
                 'marca' => $row['marca'],
                 'grupo' => $row['grupo'],
                 'seccion' => $row['seccion'],
+                'clasificacion' => $row['clasificacion'],
+                'inventario_costo' => $row['costo'],
             ]);
         }
 

@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
   Route::get('get-punto-operacion', [VentaController::class, 'get_punto_operacion']);
   Route::post('venta/carga', [VentaController::class, 'carga_data']); 
   Route::post('venta/reporte-ventas-marca', [VentaController::class, 'get_reporte_ventas_marca']);
+  Route::post('venta/reporte-ventas-operacion', [VentaController::class, 'get_reporte_ventas_operacion']);
+  Route::post('venta/reporte-ventas-clasificacion', [VentaController::class, 'get_reporte_ventas_clasificacion']);
 });
 
 Route::post('inventario/cargar-excel', [InventarioController::class, 'cargar_excel'])->name('inventario.cargar-excel');

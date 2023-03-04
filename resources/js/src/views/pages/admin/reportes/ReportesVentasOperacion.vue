@@ -5,8 +5,7 @@
             { title: 'Reportes.' },
             { title: 'Reportes Ventas', active: true },
         ]" />
-
-        <vx-card class="my-3 p-4" title="Reporte de Venta por Marca" title-color="primary">
+        <vx-card class="my-3 p-4" title="Reporte de Ventas Por Punto de Operación " title-color="primary">
             <b>Filtros de Reporte</b>
             <div class="vx-row w-100 mt-3">
                 <div class="vx-col sm:w-1/4 w-full mb-2">
@@ -52,10 +51,10 @@
 
             <div>
                 <vs-table max-items="20" pagination search stripe :data="data">
-                    <template slot="thead">
+                    <template slot="thead" class="bg-cyan-500">
                         <vs-th>Año</vs-th>
                         <vs-th>Tienda</vs-th>
-                        <vs-th>Marca</vs-th>
+                        <vs-th>Punto Operación</vs-th>
                         <vs-th># Transaccion</vs-th>
                         <vs-th>Cant</vs-th>
                         <vs-th>Total</vs-th>
@@ -74,8 +73,8 @@
                                 {{ val.tienda.tienda }}
                             </vs-td>
 
-                            <vs-td :data="val.marca">
-                                {{ val.marca }}
+                            <vs-td :data="val.punto_operacion">
+                                {{ val.punto_operacion }}
                             </vs-td>
 
                             <vs-td :data="val.transacciones_total">
@@ -95,7 +94,7 @@
                             </vs-td>
 
                             <vs-td :data="val.prom_gm">
-                                {{ (val.prom_gm * 100).toFixed(2) + '%' }}
+                                {{ (val.prom_gm *100).toFixed(2) + '%' }}
                             </vs-td>
 
                             <vs-td>
@@ -109,6 +108,7 @@
         </vx-card>
     </div>
 </template>
+
 <script>
 import Datepicker from "vuejs-datepicker";
 import { es } from "vuejs-datepicker/dist/locale";
@@ -116,6 +116,8 @@ import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 
 export default {
+    name: 'ZapecReportesVentasOperacion',
+
     data() {
         return {
             filtros: {
@@ -131,6 +133,15 @@ export default {
             tiendas: [],
             data: [],
         };
+    },
+    components: {
+        Datepicker,
+        "v-select": vSelect,
+    },
+    async mounted() {
+        this.getTiendas();
+        this.getCiudades();
+        this.getPuntoOperacion();
     },
     methods: {
         getTiendas() {
@@ -152,29 +163,11 @@ export default {
         },
         getReporteVentas() {
             this.$vs.loading();
-            this.$http.post('/api/venta/reporte-ventas-marca', this.filtros).then(resp => {
+            this.$http.post('/api/venta/reporte-ventas-operacion', this.filtros).then(resp => {
                 this.$vs.loading.close();
                 this.data = resp.data;
-            }).catch(err => {
-                this.$vs.notify({
-                    title: 'Error',
-                    text: 'Error al obtener los datos',
-                    color: 'danger',
-                    iconPack: 'feather',
-                    icon: 'icon-alert-circle',
-                    position: 'top-right'
-                })
             })
-        },
-    },
-    components: {
-        Datepicker,
-        "v-select": vSelect,
-    },
-    async mounted() {
-        this.getTiendas();
-        this.getCiudades();
-        this.getPuntoOperacion();
+        }
     },
 };
 </script>
