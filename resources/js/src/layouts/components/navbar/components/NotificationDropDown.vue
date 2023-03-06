@@ -6,8 +6,8 @@
     <vs-dropdown-menu class="notification-dropdown dropdown-custom vx-navbar-dropdown">
 
       <div class="notification-top text-center p-5 bg-primary text-white">
-        <h3 class="text-white">{{ unreadNotifications.length }} New</h3>
-        <p class="opacity-75">App Notifications</p>
+        <h3 class="text-white">{{ unreadNotifications.length }} Nuevas</h3>
+        <p class="opacity-75">Notificaciones App</p>
       </div>
 
       <component :is="scrollbarTag" ref="mainSidebarPs" class="scroll-area--nofications-dropdown p-0 mb-10" :settings="settings" :key="$vs.rtl">
@@ -42,7 +42,7 @@
         border-solid
         d-theme-border-grey-light
         cursor-pointer">
-        <span>View All Notifications</span>
+        <span>Ver Todas las notificaciones</span>
       </div>
     </vs-dropdown-menu>
   </vs-dropdown>
@@ -57,44 +57,7 @@ export default {
   },
   data () {
     return {
-      unreadNotifications: [
-        {
-          index    : 0,
-          title    : 'New Message',
-          msg      : 'Are your going to meet me tonight?',
-          icon     : 'MessageSquareIcon',
-          time     : this.randomDate({sec: 10}),
-          category : 'primary'
-        },
-        { index    : 1,
-          title    : 'New Order Recieved',
-          msg      : 'You got new order of goods.',
-          icon     : 'PackageIcon',
-          time     : this.randomDate({sec: 40}),
-          category : 'success'
-        },
-        { index    : 2,
-          title    : 'Server Limit Reached!',
-          msg      : 'Server have 99% CPU usage.',
-          icon     : 'AlertOctagonIcon',
-          time     : this.randomDate({min: 1}),
-          category : 'danger'
-        },
-        { index    : 3,
-          title    : 'New Mail From Peter',
-          msg      : 'Cake sesame snaps cupcake',
-          icon     : 'MailIcon',
-          time     : this.randomDate({min: 6}),
-          category : 'primary'
-        },
-        { index    : 4,
-          title    : 'Bruce\'s Party',
-          msg      : 'Chocolate cake oat cake tiramisu',
-          icon     : 'CalendarIcon',
-          time     : this.randomDate({hr: 2}),
-          category : 'warning'
-        }
-      ],
+      unreadNotifications: [],
       settings: {
         maxScrollbarLength: 60,
         wheelSpeed: .60

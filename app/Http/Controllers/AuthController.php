@@ -77,6 +77,48 @@ class AuthController extends Controller
         return response()->json($request->user());
     }
 
+    public function create_user(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|unique:users',
+            'password' => 'required|string',
+        ]);
+
+        $user = new User([            
+            'name'  => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'estado' => $request->estado,
+        ]);
+
+        return $user->save() ? response()->json(['message' => 'Successfully created user!']) : response()->json(['error' => 'Provide proper details']);
+    }
+
+    public function get_user($id)
+    {
+        return User::find($id);
+    }
+
+    public function update_user($id, Request $request)
+    {
+        $user = User::find($id);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if($request->password != null){
+            $user->password = bcrypt($request->password);
+        }
+        $user->estado = $request->estado;
+
+        return $user->save() ? response()->json(['message' => 'Successfully updated user!']) : response()->json(['error' => 'Provide proper details']);
+    }
+
+    public function users()
+    {
+        return User::all();
+    }
+
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();

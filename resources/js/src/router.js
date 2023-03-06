@@ -94,6 +94,18 @@ const router = new Router({
                     meta: {requiresAuth: true},
                     component: () =>import("./views/pages/mantenimientos/Venta.vue")
                 },
+                {
+                    path: "/usuarios/lista-usuarios",
+                    name: "usuarios-lista-usuarios",
+                    meta: {requiresAuth: true},
+                    component: () =>import("./views/pages/mantenimientos/usuarios.vue")
+                },
+                {
+                    path: "/usuarios/usuario",
+                    name: "mantenimientos-usuarios",
+                    meta: {requiresAuth: true},
+                    component: () =>import("./views/pages/mantenimientos/usuarioForm.vue")
+                }
             ],
         },
         // =============================================================================

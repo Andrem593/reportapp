@@ -8,8 +8,10 @@ use App\Models\Cliente;
 use App\Models\Producto;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class VentasImport implements ToModel, WithHeadingRow
+class VentasImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading
 {
     /**
     * @param array $row
@@ -181,5 +183,15 @@ class VentasImport implements ToModel, WithHeadingRow
                 'otros_bancos' => $row['otros_bancos'],
             ]);
         }
+    }
+
+    public function batchSize(): int
+    {
+        return 500;
+    }
+    
+    public function chunkSize(): int
+    {
+        return 500;
     }
 }

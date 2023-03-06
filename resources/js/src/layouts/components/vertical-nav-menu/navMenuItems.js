@@ -17,6 +17,18 @@ export default [
   },
   {
     url: null,
+    name: 'Usuarios',
+    icon: 'UserIcon',
+    submenu: [
+      {
+        url: '/usuarios/lista-usuarios',
+        name: 'Lista de Usuarios',
+        slug: 'lista-usuarios',
+      }
+    ]
+  },
+  {
+    url: null,
     name: 'Mantenimientos',
     icon: 'SettingsIcon',
     submenu: [

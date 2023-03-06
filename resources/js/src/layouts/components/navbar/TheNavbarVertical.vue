@@ -9,13 +9,13 @@
         <!-- SM - OPEN SIDEBAR BUTTON -->
         <feather-icon class="sm:inline-flex xl:hidden cursor-pointer p-2" icon="MenuIcon" @click.stop="showSidebar" />
 
-        <bookmarks :navbarColor="navbarColor" v-if="windowWidth >= 992" />
+        <vs-switch color="dark" v-model="darkMode" icon-pack="feather" vs-icon="icon-moon" class="mr-2" />
 
         <vs-spacer />
 
         <search-bar />
 
-        <notification-drop-down />
+        <notification-drop-down /> 
 
         <profile-drop-down />
 
@@ -37,6 +37,11 @@ export default {
     navbarColor: {
       type: String,
       default: '#fff'
+    }
+  },
+  data () {
+    return {
+      darkMode: false
     }
   },
   components: {
@@ -64,12 +69,23 @@ export default {
       if      (this.verticalNavMenuWidth === 'default') return 'navbar-default'
       else if (this.verticalNavMenuWidth === 'reduced') return 'navbar-reduced'
       else if (this.verticalNavMenuWidth)               return 'navbar-full'
+    },
+  },
+  watch: {
+    darkMode: {
+      handler: function (val) {
+        this.updateTheme()
+      },
+      deep: true
     }
   },
   methods: {
     showSidebar () {
       this.$store.commit('TOGGLE_IS_VERTICAL_NAV_MENU_ACTIVE', true)
-    }
+    },
+    updateTheme(){
+      this.$store.commit('UPDATE_THEME', this.darkMode ? 'dark' : 'light')
+    },
   }
 }
 </script>
