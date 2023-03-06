@@ -2,13 +2,15 @@
 
 namespace App\Imports;
 
+use Carbon\Carbon;
 use App\Models\Producto;
 use App\Models\Inventario;
-use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class InventarioAsigImport implements WithHeadingRow, ToModel
+class InventarioAsigImport implements WithHeadingRow, ToModel, WithBatchInserts, WithChunkReading
 {
     private $asignacion;
 
@@ -77,5 +79,15 @@ class InventarioAsigImport implements WithHeadingRow, ToModel
                 }
             }
         }
+    }
+
+    public function batchSize(): int
+    {
+        return 500;
+    }
+    
+    public function chunkSize(): int
+    {
+        return 500;
     }
 }

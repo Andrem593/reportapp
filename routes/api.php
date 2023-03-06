@@ -34,7 +34,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
   Route::get('tienda-ciudades', [TiendasController::class, 'get_ciudades']);
 
   Route::post('inventario/carga', [InventarioController::class, 'carga_data']);  
-  Route::get('get-inventario', [InventarioController::class, 'get_inventario']);  
+  Route::get('get-inventario', [InventarioController::class, 'get_inventario']);
+  Route::post('inventario/reporte-existencias', [InventarioController::class, 'get_reporte_existencia']);
 
   //Rutas con VentaController
   Route::get('get-punto-operacion', [VentaController::class, 'get_punto_operacion']);

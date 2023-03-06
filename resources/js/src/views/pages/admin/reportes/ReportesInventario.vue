@@ -1,324 +1,155 @@
-<!-- =========================================================================================
-    File Name: AgGridTable.vue
-    Description: Ag Grid table
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-    Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
 <template>
-    <div id="ag-grid-demo" class="mb-4">
-        <vx-card>
-            <div slot="no-body" class="full-page-bg-color">
-                <div class="vx-row no-gutter">
-                    <div
-                        class="vx-col sm:w-full md:w-full lg:w-1/2 self-center d-theme-dark-bg"
-                    >
-                        <div class="px-8 pt-8 register-tabs-container">
-                            <div class="vx-card__title mb-4">
-                                <h4 class="mb-4">
-                                    Reporte - Existencia de Inventario
-                                </h4>
-                            </div>
-                        </div>
+    <div>
+        <vs-breadcrumb :items="[
+            { title: 'Home', url: '/' },
+            { title: 'Reportes.' },
+            { title: 'Reportes Ventas', active: true },
+        ]" />
+
+        <vx-card class="my-3 p-4" title="Reporte de Inventario" title-color="primary">
+            <b>Filtros de Reporte</b>
+            <div class="vx-row w-100 mt-3">
+                <div class="vx-col sm:w-1/4 w-full mb-2">
+                    <span>Ciudades</span>
+                    <div class="my-2">
+                        <v-select multiple :closeOnSelect="false" class="w-full" v-model="filtros.ciudad"
+                            :options="ciudades" label="ciudad" />
+                    </div>
+                </div>
+                <div class="vx-col sm:w-1/4 w-full mb-2">
+                    <span>Tiendas</span>
+                    <div class="my-2">
+                        <v-select multiple :closeOnSelect="false" class="w-full" v-model="filtros.tienda" :options="tiendas"
+                            label="tienda" />
                     </div>
                 </div>
             </div>
 
-            <!-- TABLE ACTION ROW -->
-            <div class="flex flex-wrap justify-between items-center">
-                <!-- ITEMS PER PAGE -->
-                <div class="mb-4 md:mb-0 mr-4 ag-grid-table-actions-left">
-                    <vs-dropdown vs-trigger-click class="cursor-pointer">
-                        <div
-                            class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium"
-                        >
-                            <span class="mr-2"
-                                >{{
-                                    currentPage * paginationPageSize -
-                                    (paginationPageSize - 1)
-                                }}
-                                -
-                                {{
-                                    inventario.length -
-                                        currentPage * paginationPageSize >
-                                    0
-                                        ? currentPage * paginationPageSize
-                                        : inventario.length
-                                }}
-                                de {{ inventario.length }}</span
-                            >
-                            <feather-icon
-                                icon="ChevronDownIcon"
-                                svgClasses="h-4 w-4"
-                            />
-                        </div>
-                        <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
-                        <vs-dropdown-menu>
-                            <vs-dropdown-item
-                                @click="gridApi.paginationSetPageSize(20)"
-                            >
-                                <span>20</span>
-                            </vs-dropdown-item>
-                            <vs-dropdown-item
-                                @click="gridApi.paginationSetPageSize(50)"
-                            >
-                                <span>50</span>
-                            </vs-dropdown-item>
-                            <vs-dropdown-item
-                                @click="gridApi.paginationSetPageSize(100)"
-                            >
-                                <span>100</span>
-                            </vs-dropdown-item>
-                            <vs-dropdown-item
-                                @click="gridApi.paginationSetPageSize(150)"
-                            >
-                                <span>150</span>
-                            </vs-dropdown-item>
-                        </vs-dropdown-menu>
-                    </vs-dropdown>
-                </div>
-
-                <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
-                <div
-                    class="flex flex-wrap items-center justify-between ag-grid-table-actions-right"
-                >
-                    <vs-input
-                        class="mb-4 md:mb-0 mr-4"
-                        v-model="searchQuery"
-                        @input="updateSearchQuery"
-                        placeholder="Buscar..."
-                    />
-                    <vs-button
-                        class="mb-4 md:mb-0"
-                        @click="gridApi.exportDataAsCsv()"
-                        >Exportar XLS</vs-button
-                    >
+            <div class="vx-row w-100 mt-3">
+                <div class="vx-col sm:w-1/4 w-full mb-2">
+                    <vs-button @click="getInventario" color="primary" type="filled">
+                        Generar Reporte
+                    </vs-button>
                 </div>
             </div>
-            <ag-grid-vue
-                ref="agGridTable"
-                :gridOptions="gridOptions"
-                class="ag-theme-material w-100 my-4 ag-grid-table"
-                :columnDefs="columnDefs"
-                :defaultColDef="defaultColDef"
-                :rowData="inventario"
-                rowSelection="multiple"
-                colResizeDefault="shift"
-                :animateRows="true"
-                :floatingFilter="true"
-                :pagination="true"
-                :paginationPageSize="paginationPageSize"
-                :suppressPaginationPanel="true"
-                :enableRtl="$vs.rtl"
-            >
-            </ag-grid-vue>
-            <vs-pagination
-                :total="totalPages"
-                :max="maxPageNumbers"
-                v-model="currentPage"
-            />
+            <vs-divider color="primary" />
+
+            <div v-if="visible">
+                <vs-table max-items="20" pagination search stripe :data="data">
+                    <template slot="thead">                       
+                            <th class="text-center">Marca</th>
+                            <th class="text-center" v-for="(val, i) in headersTable"  :key="i">
+                                {{val}}
+                            </th>
+                            <th class="text-center">Costo Total</th>
+                    </template>
+                    <template slot-scope="{data}">
+                        <vs-tr :key="i" v-for="(val, i) in data">
+                            <vs-td class="text-center" :data="val.marca">
+                                {{ val.marca }}
+                            </vs-td>                            
+                            <vs-td class="text-center" :data="val[val2]" v-for="(val2, i2) in headersTable" :key="i2">
+                                {{ val[val2] }}
+                            </vs-td>
+                            <vs-td class="text-center" :data="val.costo_total">
+                                {{ '$ '+ val.costo_total.toFixed(2) }}
+                            </vs-td>
+                        </vs-tr>
+                    </template>
+                </vs-table>
+            </div>
         </vx-card>
     </div>
 </template>
 
 <script>
-import { AgGridVue } from "ag-grid-vue";
-import contacts from "./data.json";
-
-import "@sass/vuexy/extraComponents/agGridStyleOverride.scss";
+import Datepicker from "vuejs-datepicker";
+import { es } from "vuejs-datepicker/dist/locale";
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
 
 export default {
-    components: {
-        AgGridVue,
-    },
+    name: 'ZapecReportesInventario',
+
     data() {
         return {
-            searchQuery: "",
-            gridOptions: {},
-            maxPageNumbers: 7,
-            gridApi: null,
-            defaultColDef: {
-                sortable: true,
-                editable: true,
-                resizable: true,
-                suppressMenu: true,
+            filtros: {
+                ciudad: [],
+                tienda: [],
             },
-            columnDefs: [
-                {
-                    headerName: "SKU",
-                    field: "sku",
-                    width: 100,
-                    filter: true,
-                    // checkboxSelection: true,
-                    // headerCheckboxSelectionFilteredOnly: true,
-                    // headerCheckboxSelection: true,
-                },
-                {
-                    headerName: "Externo",
-                    field: "externo",
-                    filter: true,
-                    width: 150,
-                },
-                {
-                    headerName: "Producto",
-                    field: "producto",
-                    filter: true,
-                    width: 250,
-                    // pinned: "left",
-                },
-                {
-                    headerName: "Grupo",
-                    field: "grupo",
-                    filter: true,
-                    width: 150,
-                },
-                {
-                    headerName: "Seccion",
-                    field: "seccion",
-                    filter: true,
-                    width: 200,
-                },
-                {
-                    headerName: "Clasificación",
-                    field: "clasificacion",
-                    filter: true,
-                    width: 200,
-                },
-                {
-                    headerName: "Proveedor",
-                    field: "proveedor",
-                    filter: true,
-                    width: 150,
-                },
-                {
-                    headerName: "Estilo",
-                    field: "estilo",
-                    filter: true,
-                    width: 175,
-                },
-                {
-                    headerName: "Color",
-                    field: "color",
-                    filter: true,
-                    width: 125,
-                },
-                {
-                    headerName: "Talla",
-                    field: "talla",
-                    filter: true,
-                    width: 125,
-                },
-                {
-                    headerName: "Marca",
-                    field: "marca",
-                    filter: true,
-                    width: 125,
-                },
-                {
-                    headerName: "Costo",
-                    field: "costo",
-                    filter: true,
-                    width: 100,
-                },
-                {
-                    headerName: "Venta",
-                    field: "venta",
-                    filter: true,
-                    width: 100,
-                },
-                {
-                    headerName: "Último Movimiento",
-                    field: "ultimo-movimiento",
-                    filter: true,
-                    width: 175,
-                },
-                {
-                    headerName: "Última Venta",
-                    field: "ultima-venta",
-                    filter: true,
-                    width: 175,
-                },
-                {
-                    headerName: "Última Recepción",
-                    field: "ultima-recepcion",
-                    filter: true,
-                    width: 175,
-                },
-                {
-                    headerName: "MC DETAL - DPISAR GP",
-                    field: "gp",
-                    filter: true,
-                    width: 100,
-                },
-                {
-                    headerName: "MC DETAL - DPISAR D",
-                    field: "d",
-                    filter: true,
-                    width: 100,
-                },
-            ],
-            inventario : [],
+            es: es,
+            ciudades: [],
+            tiendas: [],
+            data: [],
+            visible: false,
+            headersTable : [],
+            marcas: [],
         };
     },
-    watch: {
-        "$store.state.windowWidth"(val) {
-            if (val <= 576) {
-                this.maxPageNumbers = 4;
-                this.gridOptions.columnApi.setColumnPinned("email", null);
-            } else this.gridOptions.columnApi.setColumnPinned("email", "left");
-        },
+    components: {
+        Datepicker,
+        "v-select": vSelect,
     },
-    computed: {
-        paginationPageSize() {
-            if (this.gridApi) return this.gridApi.paginationGetPageSize();
-            else return 50;
-        },
-        totalPages() {
-            if (this.gridApi) return this.gridApi.paginationGetTotalPages();
-            else return 0;
-        },
-        currentPage: {
-            get() {
-                if (this.gridApi)
-                    return this.gridApi.paginationGetCurrentPage() + 1;
-                else return 1;
-            },
-            set(val) {
-                this.gridApi.paginationGoToPage(val - 1);
-            },
-        },
+    async mounted() {
+        this.getTiendas();
+        this.getCiudades();
     },
     methods: {
-        updateSearchQuery(val) {
-            this.gridApi.setQuickFilter(val);
+        getTiendas() {
+            this.$http.get('/api/tienda').then(response => {
+                if (response.data.data.length > 0) {
+                    this.tiendas = response.data.data;
+                }
+            })
         },
-    },
-    mounted() {
-        this.$http.get("/api/get-inventario").then((res) => {
-            this.inventario = res.data;
+        getCiudades() {
+            this.$http.get('/api/tienda-ciudades').then(resp => {
+                this.ciudades = resp.data;
+            })
+        },
+        getInventario(){
+            this.$http.post('/api/inventario/reporte-existencias', this.filtros).then(resp => {
+                this.processData(resp.data);
+                this.visible = true;
+            })
+        },
+        processData(data) {            
+            let tiendas = [];
+            let marcas = [];
+            let newData = [];
+            data.map((val, i) => {
+                if (tiendas.indexOf(val.nombre_tienda) == -1){
+                    tiendas.push(val.nombre_tienda);
+                }
+            });
+            
+            data.map((val, i) => {
+                if (marcas.indexOf(val.marca) == -1){
+                    marcas.push(val.marca);
+                }
+            });
 
-            console.log(res.data);
-        });
+            marcas.map((val, i) => {
+                let obj = {
+                    marca: val,         
+                    costo_total: 0,           
+                };
+                tiendas.map((val2, i2) => {
+                    data.map((val3, i3) => {
+                        if (val3.marca == val && val3.nombre_tienda == val2){
+                            obj[val2] = val3.cantidad;
+                            obj.costo_total = val3.costo;
+                        }
+                    });
+                });
+                newData.push(obj);
+            });
 
-
-
-        this.gridApi = this.gridOptions.api;
-
-        /* =================================================================
-      NOTE:
-      Header is not aligned properly in RTL version of agGrid table.
-      However, we given fix to this issue. If you want more robust solution please contact them at gitHub
-    ================================================================= */
-        if (this.$vs.rtl) {
-            const header = this.$refs.agGridTable.$el.querySelector(
-                ".ag-header-container"
-            );
-            header.style.left = `-${String(
-                Number(header.style.transform.slice(11, -3)) + 9
-            )}px`;
-        }
+            
+            this.data = newData;
+            this.marcas = marcas;
+            this.headersTable = tiendas;
+        },
     },
 };
 </script>

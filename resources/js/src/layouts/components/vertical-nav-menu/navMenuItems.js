@@ -28,12 +28,12 @@ export default [
       },
       {
         url: '/mantenimientos/inventario',
-        name: 'Inventario',        
+        name: 'Carga - Inventario',        
         slug: 'inventario',
       },
       {
         url: '/mantenimientos/venta',
-        name: 'Venta',        
+        name: 'Carga - Venta',        
         slug: 'mantenimientos-venta',
       },
     ]
@@ -46,13 +46,6 @@ export default [
     icon: 'PieChartIcon',
     i18n: 'Reportes',
     submenu: [
-      {
-        url: '/reportes/carga-masiva',
-        name: 'Carga Masiva',
-        icon: 'UploadIcon',
-        slug: 'reportes-carga-masiva',
-        i18n: 'Carga Masiva',
-      },
       {
         url: '/reportes/inventario',
         name: 'Existencia de Inventario',

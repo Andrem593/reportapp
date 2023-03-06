@@ -74,8 +74,11 @@
                         </div>
 
                         <div class="vx-col w-1/2 p-2 mb-4 mt-4" v-else>
-                            <statistics-card-line hideChart class="p-4" icon="CheckIcon"
+                            <statistics-card-line v-if="!error" hideChart class="p-4" icon="CheckIcon"
                                 statisticTitle="Se Importó el archivo correctamente" statistic="Carga Completada" color="success" />
+
+                            <statistics-card-line v-else hideChart class="p-4" icon="AlertTriangleIcon" statisticTitle="Ocurrió un error al importar el archivo"
+                                statistic="Carga Fallida" color="danger" />
                         </div>
                     </div>
                 </tab-content>
@@ -106,6 +109,7 @@ export default {
             upload: false,
             charge: true,
             document: null,
+            error: false,
             select: [],
             asignacion: [],
             selectOptions: [
@@ -187,6 +191,7 @@ export default {
                         this.charge = false
                     })
                     .catch(error => {
+                        this.error = true
                         this.$vs.notify({
                             color: 'danger',
                             title: 'Error',
