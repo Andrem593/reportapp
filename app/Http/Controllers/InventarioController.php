@@ -24,7 +24,7 @@ class InventarioController extends Controller
     }
 
     public function carga_data(Request $request){
-        $path = $request->file('archivo_excel')->getRealPath();
+        $path = $request->file('archivo_excel');
         $asignacion = json_decode($request->asignacion);
 
         Excel::import(new InventarioAsigImport($asignacion), $path);

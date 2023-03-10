@@ -51,6 +51,7 @@ const is_touch_device = () => {
 
 const state = {
   auth                    : null,
+  user                    : null,
   username                : null,
   AppActiveUser           : userDefaults,
   bodyOverlay             : false,

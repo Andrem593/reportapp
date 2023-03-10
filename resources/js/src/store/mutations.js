@@ -122,6 +122,17 @@ const mutations = {
         state.auth = false;
         state.username = null;
     },
+    FETCH_USER_SUCCESS(state, user) {
+        state.auth = true;
+        state.user = user;
+    },
+    FETCH_USER_FAILURE(state) {
+        state.auth = false;
+        localStorage.removeItem("token");
+        localStorage.removeItem("userInfo");
+        state.username = null;
+        state.AppActiveUser = null;
+    },
 };
 
 export default mutations;

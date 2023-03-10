@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const actions = {
     // /////////////////////////////////////////////
     // COMPONENTS
@@ -44,6 +46,16 @@ const actions = {
     },
     doLogout({ commit }) {
         commit("doLogout");
+    },
+
+    async fetchUser({ commit }) {
+        try {
+            const { data } = await axios.get("/api/user");
+            commit('FETCH_USER_SUCCESS', { user: data });
+            commit("UPDATE_USER_INFO", data);                        
+        } catch (e) {
+            commit('FETCH_USER_FAILURE');
+        }
     },
 };
 
