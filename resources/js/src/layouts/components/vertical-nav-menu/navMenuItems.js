@@ -39,6 +39,11 @@ export default [
         slug: 'tiendas',
       },
       {
+        url: '/mantenimientos/presupuestos',
+        name: 'Presupuesto - Tienda',        
+        slug: 'mantenimientos-presupuestos',
+      },
+      {
         url: '/mantenimientos/inventario',
         name: 'Carga - Inventario',        
         slug: 'inventario',

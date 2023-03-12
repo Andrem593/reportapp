@@ -125,6 +125,13 @@ const router = new Router({
                     component: () =>
                         import("./views/pages/mantenimientos/usuarioForm.vue"),
                 },
+                {
+                    path: "/mantenimientos/presupuestos",
+                    name: "mantenimientos-presupuestos",
+                    meta: { requiresAuth: true, middleware: [authCheck] },
+                    component: () =>
+                        import("./views/pages/mantenimientos/presupuesto.vue"),
+                },
             ],
         },
         // =============================================================================
@@ -170,7 +177,7 @@ router.beforeEach((to, from, next) => {
         if (localStorage.getItem("token") != null) {
             // obtener usuario autenticado
             let user = JSON.parse(localStorage.getItem("userInfo"));
-            store.dispatch("updateUserInfo", user);
+            if (user != null) store.dispatch("updateUserInfo", user);
             next();
         } else {
             next({ name: "login" });
