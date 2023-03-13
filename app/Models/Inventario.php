@@ -10,7 +10,7 @@ class Inventario extends Model
     protected $table = 'inventarios';
 
     protected $fillable = [
-        'tienda', 'producto','cantidad'
+        'tienda', 'producto','cantidad', 'fecha_corte'
     ];
     
     public $timestamps = false;

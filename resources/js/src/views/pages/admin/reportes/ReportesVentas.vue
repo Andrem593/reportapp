@@ -49,62 +49,63 @@
                 </div>
             </div>
             <vs-divider color="primary" />
+            <div class="vx-row w-full" v-if="data.length > 0 && anios.length > 0">
 
-            <div>
-                <vs-table max-items="20" pagination search stripe :data="data">
-                    <template slot="thead">
-                        <vs-th>Año</vs-th>
-                        <vs-th>Tienda</vs-th>
-                        <vs-th>Marca</vs-th>
-                        <vs-th># Transaccion</vs-th>
-                        <vs-th>Cant</vs-th>
-                        <vs-th>Total</vs-th>
-                        <vs-th>% Desc</vs-th>
-                        <vs-th>% GM</vs-th>
-                        <vs-th>Ticket Promedio</vs-th>
-                    </template>
-                    <template slot-scope="{data}">
-                        <vs-tr :key="i" v-for="(val, i) in data">
+                <div class="w-full" v-for="anio in anios">
+                    <vs-card class="w-full">
+                        <div slot="header">
+                            <b> {{ anio.year }}</b>
+                        </div>
+                        <vs-table stripe :data="data" class="w-full">
+                            <template slot="thead">
+                                <vs-th>Tienda</vs-th>
+                                <vs-th>Marca</vs-th>
+                                <vs-th>#Trans</vs-th>
+                                <vs-th>Cant</vs-th>
+                                <vs-th >Total</vs-th>
+                                <vs-th>%Desc</vs-th>
+                                <vs-th>%GM</vs-th>
+                                <vs-th>Ticket Pro.</vs-th>
+                            </template>
+                            <template slot-scope="{data}">                                
+                                <vs-tr :key="i" v-for="(val, i) in data" v-if="data[i].year == anio.year">
+                                    <vs-td :data="val.tienda.tienda">
+                                        {{ val.tienda.tienda }}
+                                    </vs-td>
 
-                            <vs-td :data="val.anio">
-                                {{ val.anio }}
-                            </vs-td>
+                                    <vs-td :data="val.marca">
+                                        {{ val.marca }}
+                                    </vs-td>
 
-                            <vs-td :data="val.tienda.tienda">
-                                {{ val.tienda.tienda }}
-                            </vs-td>
+                                    <vs-td :data="val.transacciones_total">
+                                        {{ val.transacciones_total }}
+                                    </vs-td>
 
-                            <vs-td :data="val.marca">
-                                {{ val.marca }}
-                            </vs-td>
+                                    <vs-td :data="val.cantidad">
+                                        {{ val.cantidad }}
+                                    </vs-td>
 
-                            <vs-td :data="val.transacciones_total">
-                                {{ val.transacciones_total }}
-                            </vs-td>
+                                    <vs-td :data="val.total">
+                                        {{ '$ ' + val.total.toFixed(2) }}
+                                    </vs-td>
 
-                            <vs-td :data="val.cantidad">
-                                {{ val.cantidad }}
-                            </vs-td>
+                                    <vs-td :data="val.descuento_final">
+                                        {{ ((val.descuento_final / val.total) * 100).toFixed(2) + '%' }}
+                                    </vs-td>
 
-                            <vs-td :data="val.total">
-                                {{ '$ ' + val.total.toFixed(2) }}
-                            </vs-td>
+                                    <vs-td :data="val.prom_gm">
+                                        {{ (val.prom_gm * 100).toFixed(2) + '%' }}
+                                    </vs-td>
 
-                            <vs-td :data="val.descuento_final">
-                                {{ ((val.descuento_final / val.total) * 100).toFixed(2) + '%' }}
-                            </vs-td>
+                                    <vs-td>
+                                        {{ '$ ' + (val.total / val.transacciones_total).toFixed(2) }}
+                                    </vs-td>
 
-                            <vs-td :data="val.prom_gm">
-                                {{ (val.prom_gm * 100).toFixed(2) + '%' }}
-                            </vs-td>
-
-                            <vs-td>
-                                {{ '$ ' + (val.total / val.transacciones_total).toFixed(2) }}
-                            </vs-td>
-
-                        </vs-tr>
-                    </template>
-                </vs-table>
+                                </vs-tr>
+                            </template>
+                        </vs-table>
+                    </vs-card>
+                </div>
             </div>
         </vx-card>
     </div>
@@ -130,6 +131,7 @@ export default {
             puntoOperaciones: [],
             tiendas: [],
             data: [],
+            anios: [],
         };
     },
     methods: {
@@ -154,8 +156,10 @@ export default {
             this.$vs.loading();
             this.$http.post('/api/venta/reporte-ventas-marca', this.filtros).then(resp => {
                 this.$vs.loading.close();
-                this.data = resp.data;
+                this.anios = resp.data.anios;
+                this.data = resp.data.ventas;                
             }).catch(err => {
+                this.$vs.loading.close();       
                 this.$vs.notify({
                     title: 'Error',
                     text: 'Error al obtener los datos',

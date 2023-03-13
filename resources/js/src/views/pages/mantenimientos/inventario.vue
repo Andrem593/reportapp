@@ -5,6 +5,18 @@
             { title: 'Mant.' },
             { title: 'Inventario', active: true },
         ]" />
+        <vx-card class="my-3 p-4">
+            <div class="flex justify-between">
+                <div class="my-auto">
+                    <b>Formato de Carga</b>
+                </div>
+                <div>
+                    <vs-button type="filled" color="primary">
+                        Descargar Formato
+                    </vs-button>
+                </div>
+            </div>
+        </vx-card>        
         <vx-card class="mt-4 p-4">
             <form-wizard color="rgba(var(--vs-primary), 1)" :title="null" :subtitle="null" finishButtonText="Finalizar"
                 next-button-text="Siguiente" back-button-text="Atras" @on-complete="formSubmitted" @on-change="cargarData">
@@ -39,32 +51,6 @@
                     </div>
                 </tab-content>
 
-                <!-- tab 2 content -->
-                <tab-content title="Asignación" class="mb-5" icon="feather icon-grid" :before-change="despuesAsignar">
-                    <div v-if="upload">
-                        <div class="vx-row flex justify-around">
-                            <div class="vx-col w-1/4">
-                                <b>Nombre de Columnas</b>
-                            </div>
-                            <div class="vx-col w-1/4">
-                                <b>Asignar al campo</b>
-                            </div>
-                        </div>
-                        <div class="vx-row flex justify-around" :key="heading" v-for="heading, i in header">
-                            <div class="vx-col w-1/4">
-                                <p class="p-4"> <b>{{ heading }}</b></p>
-                            </div>
-                            <div class="vx-col w-1/4">
-                                <select class="p-2 form-select" v-model="select[i]" :key="i">
-                                    <option :key="j" :value="option" v-for="option, j in selectOptions">
-                                        {{( typeof option == 'object') ? option.tienda : option }}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </tab-content>
-
                 <!-- tab 3 content -->
                 <tab-content title="Cargar a Base" class="mb-5" icon="feather icon-database">
                     <div class="vx-row flex justify-center p-4">
@@ -75,10 +61,12 @@
 
                         <div class="vx-col w-1/2 p-2 mb-4 mt-4" v-else>
                             <statistics-card-line v-if="!error" hideChart class="p-4" icon="CheckIcon"
-                                statisticTitle="Se Importó el archivo correctamente" statistic="Carga Completada" color="success" />
+                                statisticTitle="Se Importó el archivo correctamente" statistic="Carga Completada"
+                                color="success" />
 
-                            <statistics-card-line v-else hideChart class="p-4" icon="AlertTriangleIcon" statisticTitle="Ocurrió un error al importar el archivo"
-                                statistic="Carga Fallida" color="danger" />
+                            <statistics-card-line v-else hideChart class="p-4" icon="AlertTriangleIcon"
+                                statisticTitle="Ocurrió un error al importar el archivo" statistic="Carga Fallida"
+                                color="danger" />
                         </div>
                     </div>
                 </tab-content>
@@ -110,27 +98,6 @@ export default {
             charge: true,
             document: null,
             error: false,
-            select: [],
-            asignacion: [],
-            selectOptions: [
-                'sku',
-                'externo',
-                'producto',
-                'grupo',
-                'seccion',
-                'clasificacion',
-                'proveedor',
-                'estilo',
-                'color',
-                'talla',
-                'marca',
-                'inventario_costo',
-                'inventario_venta',
-                'ultimo_movimiento',
-                'ultima_venta',
-                'ultima_recepcion',
-                'NO IMPORTAR'
-            ]
         };
     },
     methods: {
@@ -140,48 +107,12 @@ export default {
             this.sheetName = data.meta.sheetName
             this.document = data.document
             this.upload = true
-            this.asignarOptions()
-            this.asignarTiendas()
-        },
-        asignarOptions() {
-            this.header.map((option, i) => {
-                if (this.selectOptions[i] != undefined || this.selectOptions[i] != null) {
-                    this.select[i] = this.selectOptions[i]
-                } else {
-                    this.select[i] = this.selectOptions[this.selectOptions.length - 1]
-                }
-            })
-        },
-        asignarTiendas() {
-            this.$http.get('/api/tienda?per_page=all')
-                .then(response => {
-                    response.data.map((tienda, i) => {
-                        this.selectOptions.push(tienda)
-                    })
-                })
-                .catch(error => {
-                    this.$vs.noty({
-                        color: 'danger',
-                        title: 'Error',
-                        text: 'Error al cargar las tiendas'
-                    })
-                });
-        },
-        despuesAsignar() {
-            this.asignacion = []
-            this.header.map((option, i) => {
-                this.asignacion.push({
-                    'columna': option,
-                    'campo_bd': this.select[i]
-                })
-            })
-            return true
         },
         cargarData() {
-            if (this.asignacion.length > 0) {
+            if (this.document != null) {
+                this.charge = true
                 let formData = new FormData();
                 formData.append("archivo_excel", this.document);
-                formData.append("asignacion", JSON.stringify(this.asignacion));
                 this.$http.post('/api/inventario/carga', formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -189,14 +120,14 @@ export default {
                 })
                     .then(response => {
                         this.charge = false
+                        if(response.status == 500){
+                            this.error = true
+                        }
                     })
                     .catch(error => {
+                        this.charge = false
                         this.error = true
-                        this.$vs.notify({
-                            color: 'danger',
-                            title: 'Error',
-                            text: 'Error al cargar los datos'
-                        })
+                        console.log(error);
                     });
             }
         },
@@ -206,28 +137,7 @@ export default {
                 this.sheetName = '',
                 this.upload = false,
                 this.document = null,
-                this.select = [],
-                this.asignacion = [],
-                this.selectOptions = [
-                    'sku',
-                    'externo',
-                    'producto',
-                    'grupo',
-                    'seccion',
-                    'clasificacion',
-                    'proveedor',
-                    'estilo',
-                    'color',
-                    'talla',
-                    'marca',
-                    'inventario_costo',
-                    'inventario_venta',
-                    'ultimo_movimiento',
-                    'ultima_venta',
-                    'ultima_recepcion',
-                    'NO IMPORTAR'
-                ]
-            this.$router.push({ name: 'home' })
+                this.$router.push({ name: 'home' })
         }
     },
 };

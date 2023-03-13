@@ -7,6 +7,7 @@ use App\Imports\InventarioImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\InventarioAsigImport;
 use App\Models\Inventario;
+use App\Models\tienda;
 
 class InventarioController extends Controller
 {
@@ -25,9 +26,9 @@ class InventarioController extends Controller
 
     public function carga_data(Request $request){
         $path = $request->file('archivo_excel');
-        $asignacion = json_decode($request->asignacion);
+        $tiendas = tienda::where('estado', 1)->get();
 
-        Excel::import(new InventarioAsigImport($asignacion), $path);
+        Excel::import(new InventarioAsigImport($tiendas), $path);
 
         return response()->json([
             'message' => 'ok'

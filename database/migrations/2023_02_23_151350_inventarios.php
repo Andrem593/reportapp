@@ -20,6 +20,7 @@ class Inventarios extends Migration
             $table->unsignedBigInteger('producto');            
             $table->foreign('producto')->references('id')->on('productos');
             $table->integer('cantidad');
+            $table->date('fecha_corte');
         });
     }
 

@@ -165,7 +165,13 @@ export default {
                         this.document = null;
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.charge = false;
+                        this.$vs.notify({
+                            title: "Error",
+                            text: "No se pudo cargar el archivo",
+                            color: "danger",
+                            position: "top-center",
+                        });
                     });
             }
         },

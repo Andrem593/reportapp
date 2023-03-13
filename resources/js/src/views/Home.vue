@@ -3,25 +3,25 @@
     <div class="vx-row">
 
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
-        <statistics-card-line hideChart class="mb-base" icon="CpuIcon" icon-right statistic="86%"
-          statisticTitle="CPU Usage" />
+        <statistics-card-line hideChart class="mb-base" icon="ShoppingBagIcon" icon-right
+          :statistic="dashboardData.unidades ? dashboardData.unidades : 0" statisticTitle="U. Vendidas" />
       </div>
 
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
-        <statistics-card-line hideChart class="mb-base" icon="ServerIcon" icon-right statistic="1.2gb"
-          statisticTitle="Memory Usage" color="success" />
+        <statistics-card-line hideChart class="mb-base" icon="DollarSignIcon" icon-right
+          :statistic="dashboardData.ventas ? '$' + dashboardData.ventas : 0" statisticTitle="Ventas" color="success" />
       </div>
 
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
-        <statistics-card-line hideChart class="mb-base" icon="ActivityIcon" icon-right statistic="0.1%"
-          statisticTitle="Downtime Ratio" color="danger" />
+        <statistics-card-line hideChart class="mb-base" icon="ClipboardIcon" icon-right
+          :statistic="dashboardData.inventario ? dashboardData.inventario : 0" statisticTitle="Stock Pares" color="danger" />
       </div>
 
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
-        <statistics-card-line hideChart class="mb-base" icon="AlertOctagonIcon" icon-right statistic="13"
-          statisticTitle="Issues Found" color="warning" />
+        <statistics-card-line hideChart class="mb-base" icon="TagIcon" icon-right :statistic="dashboardData.costo ? '$' + dashboardData.costo : 0"
+          statisticTitle="Stock Dolares" color="warning" />
       </div>
-    </div>    
+    </div>
     <!-- LINE CHART -->
     <div class="vx-row">
       <div class="vx-col w-full md:w-2/3 mb-base">
@@ -31,16 +31,12 @@
           </template>
           <div slot="no-body" class="p-6 pb-0">
             <div class="flex">
-              <div class="mr-6">
-                <p class="mb-1 font-semibold">2023</p>
-                <p class="text-3xl text-success"><sup class="text-base mr-1">$</sup>5000</p>
-              </div>
-              <div>
-                <p class="mb-1 font-semibold">2022</p>
-                <p class="text-3xl"><sup class="text-base mr-1">$</sup>88600</p>
+              <div class="mr-6" v-for="val, i in totalXAnio">
+                <p class="mb-1 font-semibold">{{val.year}}</p>
+                <p :class=" i == 0 ? 'text-3xl text-success' : 'text-3xl' "><sup class="text-base mr-1">$</sup>{{ val.total.toFixed(2) }}</p>
               </div>
             </div>
-            <vue-apex-charts type="line" height="266" :options="graficoComparativo.chartOptions"
+            <vue-apex-charts ref="grafic" type="line" height="266" :options="graficoComparativo.chartOptions"
               :series="graficoComparativo.series" />
           </div>
         </vx-card>
@@ -163,6 +159,10 @@ export default {
       analyticsData: {},
       goalOverview: {},
       graficoComparativo: {},
+      dashboardData: [],
+      anios: [],
+      meses: [],
+      totalXAnio: [],
     };
   },
   components: {
@@ -478,18 +478,59 @@ export default {
           x: { show: false }
         }
       },
-      series: [{
-        name: "This Month",
-        data: [45000, 47000, 44800, 47500, 45500, 48000, 46500, 48600]
-      },
-      {
-        name: "Last Month",
-        data: [46000, 48000, 45500, 46600, 44500, 46500, 45000, 47000]
-      }
-      ],
+      series: [],
     }
+
+    this.getDataDashboard();
   },
   methods: {
+    getDataDashboard() {
+      this.$vs.loading()
+      this.$http.get('/api/dashboard').then(response => {
+        this.$vs.loading.close()
+        this.dashboardData = response.data
+        this.dashboardData.grafico.forEach(element => {
+          if (!this.anios.includes(element.year)) {   
+            let sumatoria = this.dashboardData.grafico.filter(x => x.year == element.year).reduce((a, b) => a + b.total, 0);                     
+            this.anios.push(element.year);
+            this.totalXAnio.push({
+              year: element.year,
+              total: sumatoria
+            })
+          }
+          if(!this.meses.includes(element.month)){
+            this.meses.push(element.month)
+          }
+        });
+        this.setDataGrafico();
+      }).catch(error => {
+        console.log(error);
+        this.$vs.loading.close()
+        this.$vs.notify({
+          title: 'Error',
+          text: 'Error al cargar datos del dashboard',
+          color: 'danger',
+          position: 'top-center'
+        })
+      })
+    },
+    setDataGrafico(){
+      let data = [];
+      this.anios.forEach(element => {
+        let data2 = this.dashboardData.grafico.filter(x => x.year == element).map(x => x.total.toFixed(2));
+        data.push( {
+          name: element,
+          data: data2
+        })
+      });
+      
+      this.graficoComparativo.series = data;     
+      this.$refs.grafic.updateOptions({
+        xaxis: {
+          categories: this.meses
+        }
+      }); 
+    }
   },
 };
 </script>

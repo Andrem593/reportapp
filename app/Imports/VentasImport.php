@@ -57,7 +57,9 @@ class VentasImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChu
             ]);
         }
 
-        $venta = Venta::where('transaccion', $row['transaccion'])->first();
+        $venta = Venta::where('transaccion', $row['transaccion'])
+        ->where('producto_id', $producto->id)
+        ->first();
 
         if ($venta == null){
             Venta::create([

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -24,6 +25,8 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
+  Route::get('dashboard', [ApplicationController::class, 'dataDashboard']);
+
   //Rutas con AuthController
   Route::get('usuarios', [AuthController::class, 'users']);
   Route::get('logout', [AuthController::class, 'logout']);
